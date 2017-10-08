@@ -80,6 +80,7 @@ values."
                                     chinese-word-at-point
                                     chinese-wbim
                                     monokai-light-theme
+                                    monokai-dark-theme
                                     neotree
                                     helm-gtags
                                     ycmd
@@ -89,6 +90,9 @@ values."
                                     org-present
                                     spacemacs-theme
                                     spacemacs-purpose-popwin
+                                    irony
+                                    company-irony
+                                    gmail-message-mode
                                     )
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.

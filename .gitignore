@@ -1,0 +1,17 @@
+ompiled
+*.elc
+
+# Packaging
+.cask
+
+# Backup files
+*~
+
+# Undo-tree save-files
+*.~undo-tree
+
+# Ignore tags cache
+.tags
+
+# Mac stored cache.
+.DS_Store

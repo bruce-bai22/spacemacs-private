@@ -30,9 +30,11 @@
 ;;; Code:
 
 (defconst sky-c-c++-packages
-  '(c-c++))
+  '(cc-mode))
 
-(defun sky-c-c++/post-init-c-c++ ()
+(defun sky-c-c++/post-init-cc-mode ()
+  (setenv "GTAGSLIBPATH" "/usr/include")
+  (setenv "MAKEOBJDIRPREFIX" (file-truename "~/.spacemacs.d/.tags/"))
   (add-hook 'c-mode-hook (lambda ()
                            (setq company-backends '((company-gtags company-etags company-dabbrev-code company-files)))))
   (add-hook 'c++-mode-hook (lambda ()

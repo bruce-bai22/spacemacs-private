@@ -30,9 +30,6 @@
 ;;; Code:
 
 (defconst sky-javascript-packages
-  '(sky-gtags))
-
-(defun sky-javascript/post-init-sky-gtags ()
-  (sky-gtags-define-keys-for-major-mode 'js2-mode))
+  '())
 
 ;;; packages.el ends here

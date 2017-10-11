@@ -30,10 +30,6 @@
 ;;; Code:
 
 (defconst sky-c-c++-packages
-  '(sky-gtags))
-
-(defun sky-c-c++/post-init-sky-gtags ()
-  (dolist (mode c-c++-modes)
-    (sky-gtags-define-keys-for-major-mode mode)))
+  '())
 
 ;;; packages.el ends here

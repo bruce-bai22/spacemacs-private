@@ -30,32 +30,40 @@
 ;;; Code:
 
 (defconst sky-prog-basis-packages
-  '((sky-gtags :location local)
-    ggtags
+  '(ggtags
     flycheck
     company
     hungry-delete))
 
-(defun sky-prog-basis/init-sky-gtags ()
-  (use-package sky-gtags
-    :init
-    (setq ggtags-global-window-height 18)
-    :commands (sky-gtags-create-tags
-               sky-gtags-update-tags
-               sky-gtags-mode)))
+(defun sky-prog-basis/post-init-ggtags ()
+  (spacemacs/declare-prefix "og" "gtags")
+  (spacemacs/declare-prefix "ogf" "gtags-find")
+  (spacemacs/declare-prefix "ogq" "gtags-query")
+  (spacemacs/declare-prefix "ogm" "gtags-mark")
+  (spacemacs/declare-prefix "ogh" "gtags-history")
+  (spacemacs/set-leader-keys "ogc" 'helm-gtags-create-tags)
+  (spacemacs/set-leader-keys "ogu" 'helm-gtags-update-tags)
+  (spacemacs/set-leader-keys "ogft" 'ggtags-find-tag-dwim)
+  (spacemacs/set-leader-keys "ogfd" 'ggtags-find-definition)
+  (spacemacs/set-leader-keys "ogfr" 'ggtags-find-reference)
+  (spacemacs/set-leader-keys "ogff" 'ggtags-find-file)
+  (spacemacs/set-leader-keys "ogfs" 'ggtags-find-other-symbol)
+  (spacemacs/set-leader-keys "ogg" 'ggtags-grep)
+  (spacemacs/set-leader-keys "ogqr" 'ggtags-query-replace)
+  (spacemacs/set-leader-keys "ogqi" 'ggtags-idutils-query)
+  (spacemacs/set-leader-keys "ogmp" 'ggtags-prev-mark)
+  (spacemacs/set-leader-keys "ogmn" 'ggtags-next-mark)
+  (spacemacs/set-leader-keys "oght" 'ggtags-view-tag-history)
+  (spacemacs/set-leader-keys "oghs" 'ggtags-view-search-history)
+  (spacemacs/set-leader-keys "ogkb" 'ggtags-kill-file-buffers)
+  (spacemacs/set-leader-keys "ogro" 'ggtags-toggle-project-read-only)
+  (spacemacs/set-leader-keys "ogpr" 'ggtags-visit-project-root)
+  (spacemacs/set-leader-keys "ogtd" 'ggtags-delete-tags)
+  (spacemacs/set-leader-keys "ogte" 'ggtags-explain-tags)
+  (spacemacs/set-leader-keys "ogbh" 'ggtags-browse-file-as-hypertext)
 
-(defun sky-prog-basis/init-ggtags ()
-  (use-package ggtags
-    :defer t
-    :init
-    (progn
-      ;; modes that do not have a layer, add here.
-      (add-hook 'awk-mode-local-vars-hook #'spacemacs/ggtags-mode-enable)
-      (add-hook 'shell-mode-local-vars-hook #'spacemacs/ggtags-mode-enable)
-      (add-hook 'tcl-mode-local-vars-hook #'spacemacs/ggtags-mode-enable)
-      (add-hook 'vhdl-mode-local-vars-hook #'spacemacs/ggtags-mode-enable))
-    :config
-    (sky-gtags-mode 1)))
+  (with-eval-after-load 'ggtags
+    (setq ggtags-global-window-height 18)))
 
 (defun sky-prog-basis/post-init-flycheck ()
   (setq flycheck-display-errors-delay 1.0)

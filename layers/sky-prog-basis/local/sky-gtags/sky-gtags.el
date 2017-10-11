@@ -59,6 +59,7 @@
 
 (defsubst sky-gtags--create-command (label dir)
   "Get the create tags command."
+  (sky-gtags--set-global-update-env dir)
   (sky-gtags--create-dir-gtagslabel dir label)
   (concat "gtags" " -q" " " (sky-gtags--label-option label) " " (sky-gtags--create-dir-option dir)))
 

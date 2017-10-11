@@ -30,6 +30,12 @@
 ;;; Code:
 
 (defconst sky-c-c++-packages
-  '())
+  '(c-c++))
+
+(defun sky-c-c++/post-init-c-c++ ()
+  (add-hook 'c-mode-hook (lambda ()
+                           (setq company-backends '((company-gtags company-etags company-dabbrev-code company-files)))))
+  (add-hook 'c++-mode-hook (lambda ()
+                             (setq company-backends '((company-gtags company-etags company-dabbrev-code company-files))))))
 
 ;;; packages.el ends here

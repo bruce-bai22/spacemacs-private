@@ -25,3 +25,7 @@
 
 ;; 打开文件时，检查大文件，若文件过大，则使用 fundamental-mode 打开，不再开启各种 minor-mode，提升速度.
 (add-hook 'find-file-hook 'spacemacs/check-large-file)
+
+;; 设置 org-mode 下的自动换行
+(add-hook 'org-mode-hook
+          (lambda () (setq truncate-lines nil)))

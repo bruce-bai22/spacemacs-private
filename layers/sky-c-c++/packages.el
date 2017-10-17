@@ -33,6 +33,8 @@
   '(cc-mode))
 
 (defun sky-c-c++/post-init-cc-mode ()
+  (dolist (mode c-c++-modes)
+    (spacemacs/counsel-gtags-define-keys-for-mode mode))
   (setenv "GTAGSLIBPATH" "/usr/include")
   (setenv "MAKEOBJDIRPREFIX" (file-truename "~/.spacemacs.d/.tags/"))
   (add-hook 'c-mode-hook (lambda ()

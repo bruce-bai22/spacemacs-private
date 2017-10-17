@@ -31,10 +31,11 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     ivy
      html
      swift
      vimscript
-     helm
+     ;; helm
      ruby
      javascript
      (markdown :variables
@@ -48,7 +49,7 @@ values."
      org
      osx
      imenu-list
-     (chinese :packages youdao-dictionary fcitx
+     (chinese :packages youdao-dictionary fcitx pangu-spacing
               :variables
               chinese-enable-youdao-dict t
               chinese-enable-fcitx t)
@@ -64,7 +65,6 @@ values."
      (c-c++ :variables
             c-c++-default-mode-for-headers 'c++-mode
             c-c++-enable-clang-support t)
-     gtags
      sky
      )
    ;; List of additional packages that will be installed without being

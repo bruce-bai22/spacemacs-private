@@ -30,31 +30,17 @@
 ;;; Code:
 
 ;; Gtags
-(defun sky-gtags-define-keys-for-major-mode (mode)
-  "为major mode：mode 设置ggtags快捷键"
-  (spacemacs/declare-prefix-for-mode mode "mg" "gtags")
-  (spacemacs/set-leader-keys-for-major-mode mode
-    "gc" 'sky-gtags-create-tags
-    "gu" 'sky-gtags-update-tags
-    "gft" 'ggtags-find-tag-dwim
-    "gfd" 'ggtags-find-definition
-    "gfr" 'ggtags-find-reference
-    "gff" 'ggtags-find-file
-    "gfr" 'ggtags-find-tag-regexp
-    "gfs" 'ggtags-find-other-symbol
-    "gg" 'ggtags-grep
-    "gqr" 'ggtags-query-replace
-    "gqi" 'ggtags-idutils-query
-    "gmp" 'ggtags-prev-mark
-    "gmn" 'ggtags-next-mark
-    "ght" 'ggtags-view-tag-history
-    "ghs" 'ggtags-view-search-history
-    "gkb" 'ggtags-kill-file-buffers
-    "gro" 'ggtags-toggle-project-read-only
-    "gpr" 'ggtags-visit-project-root
-    "gtd" 'ggtags-delete-tags
-    "gte" 'ggtags-explain-tags
-    "gbh" 'ggtags-browse-file-as-hypertext))
+(defun spacemacs/counsel-gtags-define-keys-for-mode (mode)
+  "为 major mode：mode 设置 counsel-gtags 快捷键"
+  (when (fboundp mode)
+    (spacemacs/set-leader-keys-for-major-mode mode
+      "gc" 'counsel-gtags-create-tags
+      "gD" 'counsel-gtags-find-definition
+      "gr" 'counsel-gtags-find-reference
+      "gs" 'counsel-gtags-find-symbol
+      "gf" 'counsel-gtags-find-file
+      "gu" 'counsel-gtags-update-tags
+      "gd" 'counsel-gtags-dwim)))
 
 (defun sky-toggle-default-company-backends ()
   (interactive)

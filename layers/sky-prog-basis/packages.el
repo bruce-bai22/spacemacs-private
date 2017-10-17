@@ -30,57 +30,41 @@
 ;;; Code:
 
 (defconst sky-prog-basis-packages
-  '(ggtags
+  '(counsel-gtags
     flycheck
     company
-    hungry-delete))
+    hungry-delete
+    pangu-spacing))
 
-(defun sky-prog-basis/post-init-ggtags ()
-  (spacemacs/declare-prefix "og" "gtags")
-  (spacemacs/declare-prefix "ogf" "gtags-find")
-  (spacemacs/declare-prefix "ogq" "gtags-query")
-  (spacemacs/declare-prefix "ogm" "gtags-mark")
-  (spacemacs/declare-prefix "ogh" "gtags-history")
-  (spacemacs/set-leader-keys "ogc" 'helm-gtags-create-tags)
-  (spacemacs/set-leader-keys "ogu" 'helm-gtags-update-tags)
-  (spacemacs/set-leader-keys "ogft" 'ggtags-find-tag-dwim)
-  (spacemacs/set-leader-keys "ogfd" 'ggtags-find-definition)
-  (spacemacs/set-leader-keys "ogfr" 'ggtags-find-reference)
-  (spacemacs/set-leader-keys "ogff" 'ggtags-find-file)
-  (spacemacs/set-leader-keys "ogfs" 'ggtags-find-other-symbol)
-  (spacemacs/set-leader-keys "ogg" 'ggtags-grep)
-  (spacemacs/set-leader-keys "ogqr" 'ggtags-query-replace)
-  (spacemacs/set-leader-keys "ogqi" 'ggtags-idutils-query)
-  (spacemacs/set-leader-keys "ogmp" 'ggtags-prev-mark)
-  (spacemacs/set-leader-keys "ogmn" 'ggtags-next-mark)
-  (spacemacs/set-leader-keys "oght" 'ggtags-view-tag-history)
-  (spacemacs/set-leader-keys "oghs" 'ggtags-view-search-history)
-  (spacemacs/set-leader-keys "ogkb" 'ggtags-kill-file-buffers)
-  (spacemacs/set-leader-keys "ogro" 'ggtags-toggle-project-read-only)
-  (spacemacs/set-leader-keys "ogpr" 'ggtags-visit-project-root)
-  (spacemacs/set-leader-keys "ogtd" 'ggtags-delete-tags)
-  (spacemacs/set-leader-keys "ogte" 'ggtags-explain-tags)
-  (spacemacs/set-leader-keys "ogbh" 'ggtags-browse-file-as-hypertext)
-
-  (with-eval-after-load 'ggtags
-    (setq ggtags-global-window-height 18)))
+(defun sky-prog-basis/init-counsel-gtags ()
+  (use-package counsel-gtags
+    :defer t
+    :init
+    (add-hook 'prog-mode-hook 'counsel-gtags-mode)
+    :bind (:map counsel-gtags-mode-map
+                ("C-;" . counsel-gtags-go-backward)
+                ("C-'" . counsel-gtags-go-forward))))
 
 (defun sky-prog-basis/post-init-flycheck ()
   (setq flycheck-display-errors-delay 1.0)
   (setq flycheck-idle-change-delay 3.0))
 
 (defun sky-prog-basis/post-init-company ()
-  ;; 某些没有开启auto-complete的mode下，使用SPC-t a开启补全后，需要设置backends，否则无法补全
+  ;; 某些没有开启 auto-complete 的 mode 下，使用 SPC-t a 开启补全后，需要设置 backends，否则无法补全
   (spacemacs/set-leader-keys "ob" 'sky-toggle-default-company-backends)
   (with-eval-after-load 'company
     ;; 定义 company mode 上下选择补全项时使用 C-n/C-p 替换 M-n/M-p
     (define-key company-active-map (kbd "C-n") #'company-select-next)
     (define-key company-active-map (kbd "C-p") #'company-select-previous)
-    (spacemacs/diminish-undo 'company-mode)
+    ;; (spacemacs/diminish-undo 'company-mode)
     (setq company-minimum-prefix-length 1)
     (setq company-idle-delay 0.1)))
 
 (defun sky-prog-basis/post-init-hungry-delete ()
   (add-hook 'prog-mode-hook 'hungry-delete-mode))
+
+(defun sky-prog-basis/post-init-pangu-spacing ()
+  (add-hook 'prog-mode-hook '(lambda ()
+                               (set (make-local-variable 'pangu-spacing-real-insert-separtor) t))))
 
 ;;; packages.el ends here

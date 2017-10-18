@@ -30,10 +30,28 @@
 ;;; Code:
 
 (defconst sky-ui-packages
-  '(linum))
+  '(linum
+    hungry-delete
+    counsel-gtags
+    lispy))
 
 (defun sky-ui/post-init-linum ()
   ;; 配置 linum 只有在编程模式下开启
   (add-hook 'prog-mode-hook 'linum-mode))
+
+(defun sky-ui/pre-init-counsel-gtags ()
+  (spacemacs|use-package-add-hook counsel-gtags
+    :post-init
+    (spacemacs|diminish counsel-gtags-mode "Ⓖ" "G")))
+
+(defun sky-ui/pre-init-hungry-delete ()
+  (spacemacs|use-package-add-hook hungry-delete
+    :post-init
+    (spacemacs|diminish hungry-delete-mode "ⓗ" "h")))
+
+(defun sky-ui/pre-init-lispy ()
+  (spacemacs|use-package-add-hook lispy
+    :post-init
+    (spacemacs|diminish lispy-mode "Ⓛ" "L")))
 
 ;;; packages.el ends here

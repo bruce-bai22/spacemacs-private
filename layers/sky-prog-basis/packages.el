@@ -41,9 +41,6 @@
     :defer t
     :init
     (add-hook 'prog-mode-hook 'counsel-gtags-mode)
-    (spacemacs|use-package-add-hook counsel-gtags
-      :post-init
-      (spacemacs|diminish counsel-gtags-mode "Ⓖ" "G"))
     :bind (:map counsel-gtags-mode-map
                 ("C-;" . counsel-gtags-go-backward)
                 ("C-'" . counsel-gtags-go-forward))))
@@ -62,11 +59,6 @@
     ;; (spacemacs/diminish-undo 'company-mode)
     (setq company-minimum-prefix-length 1)
     (setq company-idle-delay 0.1)))
-
-(defun sky-prog-basis/pre-init-hungry-delete ()
-  (spacemacs|use-package-add-hook hungry-delete
-    :post-init
-    (spacemacs|diminish hungry-delete-mode "ⓗ" "h")))
 
 (defun sky-prog-basis/post-init-hungry-delete ()
   (add-hook 'prog-mode-hook 'hungry-delete-mode))

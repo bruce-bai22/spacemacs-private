@@ -36,9 +36,6 @@
   (use-package lispy
     :defer t
     :init
-    (spacemacs|use-package-add-hook lispy
-      :post-init
-      (spacemacs|diminish lispy-mode "Ⓛ" "L"))
     (add-hook 'emacs-lisp-mode-hook (lambda () (lispy-mode 1)))
     (add-hook 'lisp-interaction-mode-hook (lambda () (lispy-mode 1)))))
 

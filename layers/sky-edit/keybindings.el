@@ -10,3 +10,6 @@
 ;;; License: GPLv3
 
 ;;; Commentary:
+
+;; 取消搜索高亮
+(spacemacs/set-leader-keys "nl" 'evil-ex-nohighlight)

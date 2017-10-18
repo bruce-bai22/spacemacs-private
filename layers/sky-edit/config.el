@@ -1,4 +1,4 @@
-;;; funcs.el --- sky-edit layer packages file for Spacemacs.
+;;; config.el --- sky-edit layer packages file for Spacemacs.
 ;;
 ;; Copyright (c) 2012-2017 Sylvain Benner & Contributors
 ;;
@@ -29,3 +29,5 @@
 ;; 设置 org-mode 下的自动换行
 (add-hook 'org-mode-hook
           (lambda () (setq truncate-lines nil)))
+
+;; config.el ends here.

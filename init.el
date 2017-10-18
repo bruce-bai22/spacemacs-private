@@ -35,7 +35,6 @@ values."
      html
      swift
      vimscript
-     ;; helm
      ruby
      javascript
      (markdown :variables
@@ -58,8 +57,7 @@ values."
      (syntax-checking :variables
                       syntax-checking-enable-by-default nil)
      (spacemacs-layouts :variables
-                        layouts-enable-autosave nil
-                        layouts-autosave-delay 300)
+                        layouts-enable-autosave nil)
      command-log
      (ranger :variables ranger-show-preview t)
      (c-c++ :variables

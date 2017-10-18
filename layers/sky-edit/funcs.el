@@ -13,7 +13,7 @@
 
 
 ;; 解决 Ranger 与 golden ratio 不兼容
-;; 顺便在开启 ranger 时，自动将 dired-dwim-target 置为nil，根据需求可使用 SPC-d d 切换
+;; 顺便在开启 ranger 时，自动将 dired-dwim-target 置为 nil，根据需求可使用 SPC-d d 切换
 (when (configuration-layer/package-usedp 'ranger)
   (defun sky-ranger ()
     (interactive)
@@ -43,7 +43,7 @@
           (ranger-close))
       (ranger-close))))
 
-;; 快速调整dired-mode下copy、rename的提示目录是当前目录还是其余dired的目录
+;; 快速调整 dired-mode 下 copy、rename 的提示目录是当前目录还是其余 dired 的目录
 (defun sky-toggle-dired-dwim-target ()
   (interactive)
   (if dired-dwim-target

@@ -33,8 +33,7 @@
   '(counsel-gtags
     flycheck
     company
-    hungry-delete
-    pangu-spacing))
+    hungry-delete))
 
 (defun sky-prog-basis/init-counsel-gtags ()
   (use-package counsel-gtags
@@ -63,8 +62,8 @@
 (defun sky-prog-basis/post-init-hungry-delete ()
   (add-hook 'prog-mode-hook 'hungry-delete-mode))
 
-(defun sky-prog-basis/post-init-pangu-spacing ()
-  (add-hook 'prog-mode-hook '(lambda ()
-                               (set (make-local-variable 'pangu-spacing-real-insert-separtor) t))))
+;; (defun sky-prog-basis/post-init-pangu-spacing ()
+;;   (add-hook 'prog-mode-hook '(lambda ()
+;;                                (set (make-local-variable 'pangu-spacing-real-insert-separtor) t))))
 
 ;;; packages.el ends here

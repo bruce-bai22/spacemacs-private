@@ -48,7 +48,7 @@ values."
      org
      osx
      imenu-list
-     (chinese :packages youdao-dictionary fcitx pangu-spacing
+     (chinese :packages youdao-dictionary fcitx
               :variables
               chinese-enable-youdao-dict t
               chinese-enable-fcitx t)

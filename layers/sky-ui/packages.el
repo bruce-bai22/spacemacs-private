@@ -33,7 +33,8 @@
   '(linum
     hungry-delete
     counsel-gtags
-    lispy))
+    lispy
+    mmm-mode))
 
 (defun sky-ui/post-init-linum ()
   ;; 配置 linum 只有在编程模式下开启
@@ -53,5 +54,10 @@
   (spacemacs|use-package-add-hook lispy
     :post-init
     (spacemacs|diminish lispy-mode "Ⓛ" "L")))
+
+(defun sky-ui/pre-init-mmm-mode ()
+  (spacemacs|use-package-add-hook mmm-mode
+    :post-init
+    (spacemacs|diminish mmm-mode "Ⓜ" "M")))
 
 ;;; packages.el ends here

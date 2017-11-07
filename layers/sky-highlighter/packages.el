@@ -34,8 +34,9 @@
     (ov-highlighter :location local)))
 
 (defun sky-highlighter/init-ov ()
-  ;; ov 这个package写的时候很多方法没有考虑到defer load，所以这里没有延迟加载
-  (use-package ov))
+  ;; 虽然 package ov 很多函数没有考虑 autoloads，但是 ov-highlighter package require 了 ov，当加载 ov-highlighter 时会加载 ov
+  (use-package ov
+    :defer t))
 
 (defun sky-highlighter/init-ov-highlighter ()
   (use-package ov-highlighter

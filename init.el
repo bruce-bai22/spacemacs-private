@@ -45,7 +45,6 @@ values."
                       better-defaults-move-to-end-of-code-first t)
      emacs-lisp
      ;; git ;; Magit is too slow in large project.
-     org
      osx
      imenu-list
      (chinese :packages youdao-dictionary fcitx
@@ -58,6 +57,7 @@ values."
                       syntax-checking-enable-by-default nil)
      (spacemacs-layouts :variables
                         layouts-enable-autosave nil)
+     org
      command-log
      (ranger :variables ranger-show-preview t)
      (c-c++ :variables
@@ -80,6 +80,7 @@ values."
                                     monokai-light-theme
                                     monokai-dark-theme
                                     neotree
+                                    eyebrowse
                                     ycmd
                                     octave
                                     osx-dictionary

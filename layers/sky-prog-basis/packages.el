@@ -31,6 +31,7 @@
 
 (defconst sky-prog-basis-packages
   '(counsel-gtags
+    ;; sky-gtags 不再使用，使用 counsel-gtags，TAGS 文件也不在存放在 ~/.spacemacs.d/.tags 下
     flycheck
     company
     hungry-delete))
@@ -61,9 +62,5 @@
 
 (defun sky-prog-basis/post-init-hungry-delete ()
   (add-hook 'prog-mode-hook 'hungry-delete-mode))
-
-;; (defun sky-prog-basis/post-init-pangu-spacing ()
-;;   (add-hook 'prog-mode-hook '(lambda ()
-;;                                (set (make-local-variable 'pangu-spacing-real-insert-separtor) t))))
 
 ;;; packages.el ends here

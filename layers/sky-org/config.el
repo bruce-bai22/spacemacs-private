@@ -48,3 +48,9 @@
          "** %? %^g\n   %T\n   %i\n")))
 
 (setq org-default-notes-file (concat org-directory "/inbox.org"))
+
+;; 设置 agenda files
+(setq org-agenda-files '("~/Org/GTD"))
+
+;; 打开 diary 功能，记录纪念日、节日，查找日出日落等信息。暂时不需要
+;; (setq org-agenda-include-diary t)

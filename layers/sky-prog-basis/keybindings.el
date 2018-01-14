@@ -12,5 +12,6 @@
 
 ;;; Commentary:
 
+(define-key prog-mode-map (kbd "H-/") 'spacemacs/comment-or-uncomment-lines)
 
 ;; keybindings.el ends here.

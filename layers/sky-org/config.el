@@ -13,34 +13,38 @@
 
 ;; TODO 状态定义
 (setq org-todo-keywords
-      '((sequence "TODO(t!)"
-                  "NEXT(n)"
-                  "WAITTING(w)"
-                  "SOMEDAY(s)" "|" "DONE(d@/!)" "ABORT(a@/!)")
-        ))
+      '((sequence "TODO(t@/!)"
+                  "NEXT(n@/!)"
+                  "WAITTING(w@/!)"
+                  "SOMEDAY(s@/!)" "|" "DONE(d@/!)" "ABORT(a@/!)")))
 
 ;; 定义 org-capture 模板
 (setq org-directory "~/Org/GTD")
 (setq org-capture-templates
-      '(("n" "New" entry (file "~/Org/GTD/inbox.org")
-         "* %? %^g\n %T\n %i\n")
+      '(
+        ;; Inbox 存放临时想起的事情，之后需要处理 Inbox 中的内容，重新归类(如放入 Project、Ideas、Tasks等)
+        ("n" "New" entry (file+headline "~/Org/GTD/inbox.org" "Inbox")
+         "** %? %^g\n   %T\n   %i\n")
+        ;; Tasks 存放自己学习待办事项
         ("t" "Task" entry (file+headline "~/Org/GTD/task.org" "Tasks")
-         "** TODO %?\n %T\n %i\n")
-        ("i" "Idea" entry (file+headline "~/Org/GTD/task.org" "Ideas")
-         "** %? %^g\n %T\n %i\n")
-        ("c" "Calendar" entry (file "~/Org/GTD/calendar.org")
-         "* TODO %?\n %T\n %i\n")
-        ("pi" "POCT-iOS" entry (file+headline "~/Org/GTD/poct.org" "iOS")
-         "** TODO %?\n %T\n %i\n")
-        ("ps" "POCT-Server" entry (file+headline "~/Org/GTD/poct.org" "Server")
-         "** TODO %?\n %T\n %i\n")
-        ("f" "Financial" entry (file "~/Org/GTD/financial.org")
-         "** %?\n %T\n %i\n")
-        ("d" "DailyLife" entry (file "~/Org/GTD/dailylife.org")
-         "* %?\n %T\n %i\n")
-        ("n" "Note" entry (file "~/Org/GTD/note.org")
-         "* %?\n %T\n %i\n")))
+         "** TODO %? %^g\n   %T\n   %i\n")
+        ;; Ideas 存放工作学习过程中的一些想法
+        ("s" "Someday" entry (file+headline "~/Org/GTD/task.org" "Someday")
+         "** %? %^g\n   %T\n   %i\n")
+        ;; 存放工作中会议日程、个人的日程等
+        ("c" "Calendar" entry (file+headline "~/Org/GTD/calendar.org" "Calendar")
+         "** TODO %?\n   %T\n   %i\n")
+        ;; Loan 存放借出的钱
+        ("l" "Loan" entry (file+headline "~/Org/GTD/financial.org" "Loan")
+         "** TODO %?\n   %T\n   %i\n")
+        ;; Project 存放工作项目有关事宜
+        ("p" "Project" entry (file+headline "~/Org/GTD/project.org" "Project")
+         "** TODO %? %^g%^g%^g\n   %T\n   %i\n")
+        ;; DailyLife 存放杂事
+        ("d" "DailyLife" entry (file+headline "~/Org/GTD/dailylife.org" "DailyLife")
+         "** %?\n   %T\n   %i\n")
+        ;; Note 存放一些记录，如一些工作账号、重要链接、记录等
+        ("N" "Note" entry (file+headline "~/Org/GTD/note.org" "Note")
+         "** %? %^g\n   %T\n   %i\n")))
 
 (setq org-default-notes-file (concat org-directory "/inbox.org"))
-
-;; 设置 org 文件中优先级显示的样式

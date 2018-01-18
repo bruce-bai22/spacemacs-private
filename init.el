@@ -33,18 +33,18 @@ values."
    '(
      ivy
      html
-     swift
      vimscript
      ruby
      javascript
      (markdown :variables
                markdown-live-preview-engine 'vmd)
-     php
+     swift
+     ;; git ;; Magit is too slow in large project.
+     ;; php
      auto-completion
      (better-defaults :variables
                       better-defaults-move-to-end-of-code-first t)
      emacs-lisp
-     ;; git ;; Magit is too slow in large project.
      osx
      imenu-list
      (chinese :packages youdao-dictionary fcitx
@@ -77,6 +77,8 @@ values."
                                     chinese-pyim
                                     chinese-word-at-point
                                     chinese-wbim
+                                    fancy-battery
+                                    google-translate
                                     monokai-light-theme
                                     monokai-dark-theme
                                     neotree
@@ -85,6 +87,7 @@ values."
                                     octave
                                     osx-dictionary
                                     auto-complete
+                                    pangu-spacing
                                     org-present
                                     spacemacs-theme
                                     spacemacs-purpose-popwin

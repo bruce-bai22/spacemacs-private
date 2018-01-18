@@ -34,7 +34,7 @@
     ranger
     dired
     occur-mode
-    helm
+    counsel
     evil))
 
 (defun sky-edit/post-init-fcitx ()
@@ -71,8 +71,8 @@
   (spacemacs/set-leader-keys "od" 'occur-dwim)
   (define-key occur-mode-map (kbd "C-c C-e") 'occur-edit-mode))
 
-(defun sky-edit/post-init-helm ()
-  (spacemacs/set-leader-keys "oi" 'helm-imenu))
+(defun sky-edit/post-init-counsel ()
+  (spacemacs/set-leader-keys "oi" 'counsel-imenu))
 
 (defun sky-edit/post-init-evil ()
   ;; 快速替换当前 buffer中的字符

@@ -30,11 +30,24 @@
 ;;; Code:
 
 (defconst sky-org-packages
-  '(org))
+  '(org
+    ;; (org-agenda :location built-in)
+    ))
 
 (defun sky-org/post-init-org ()
   (with-eval-after-load 'org
     ;; Open org-mode export markdown file.
     (setq org-export-backends (quote (ascii html icalendar latex md)))))
+
+;; 在 org-agenda-mode 下，设置 d 为 dispatch 快捷键
+;; 暂时使用 org layer 提供的 C-v 吧
+;; (defun sky-org/pre-init-org-agenda ()
+;;   (spacemacs|use-package-add-hook org-agenda
+;;     :post-config
+;;     (evilified-state-evilify-map org-agenda-mode-map
+;;       :mode org-agenda-mode
+;;       :bindings
+;;       "d" 'org-agenda-view-mode-dispatch))
+;;   )
 
 ;;; packages.el ends here

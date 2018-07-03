@@ -31,7 +31,7 @@
         ;; Ideas 存放工作学习过程中的一些想法
         ("s" "Someday" entry (file+headline "~/Org/GTD/task.org" "Someday")
          "** %? %^g\n   %T\n   %i\n")
-        ;; 存放工作中会议日程、个人的日程等
+        ;; 存放工作中会议日程等
         ("c" "Calendar" entry (file+headline "~/Org/GTD/calendar.org" "Calendar")
          "** TODO %?\n   %T\n   %i\n")
         ;; Loan 存放借出的钱
@@ -40,9 +40,9 @@
         ;; Project 存放工作项目有关事宜
         ("p" "Project" entry (file+headline "~/Org/GTD/project.org" "Project")
          "** TODO %? %^g%^g%^g\n   %T\n   %i\n")
-        ;; DailyLife 存放杂事
+        ;; DailyLife 存放个人的日程以及杂事
         ("d" "DailyLife" entry (file+headline "~/Org/GTD/dailylife.org" "DailyLife")
-         "** %?\n   %T\n   %i\n")
+         "** TODO %?\n   %T\n   %i\n")
         ;; Note 存放一些记录，如一些工作账号、重要链接、记录等
         ("N" "Note" entry (file+headline "~/Org/GTD/note.org" "Note")
          "** %? %^g\n   %T\n   %i\n")))

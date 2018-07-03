@@ -12,6 +12,7 @@
 
 ;;; Commentary:
 
+;; 注释代码
 (define-key prog-mode-map (kbd "H-/") 'spacemacs/comment-or-uncomment-lines)
 
 ;; keybindings.el ends here.

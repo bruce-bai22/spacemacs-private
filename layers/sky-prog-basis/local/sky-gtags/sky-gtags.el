@@ -1,5 +1,6 @@
 ;; ---------------------------------------------------------------------------------------------------------------------------
 ;; Basic.
+;; Deprecated, use counsel-gtags instead. And finally, use lsp.
 
 (defsubst sky-gtags--get-dir-full-name (dir)
   "If the dir is string like ~/*, then replace ~ with /Users/Baitianyu"

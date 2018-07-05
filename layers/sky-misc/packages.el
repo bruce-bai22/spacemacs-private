@@ -31,7 +31,8 @@
 
 (defconst sky-misc-packages
   '(youdao-dictionary
-    paradox))
+    paradox
+    counsel))
 
 (defun sky-misc/post-init-youdao-dictionary ()
   (spacemacs/set-leader-keys "oy" 'youdao-dictionary-search-at-point+))
@@ -40,5 +41,8 @@
   (with-eval-after-load 'paradox
     (setq paradox-automatically-star nil)
     (setq paradox-github-token "fa6ba6c8cdc64ae5a1aef7e6906203ff1663104a")))
+
+(defun sky-misc/post-init-counsel ()
+  )
 
 ;;; packages.el ends here

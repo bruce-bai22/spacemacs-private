@@ -30,6 +30,7 @@ This function should only modify configuration layer settings."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     git
      ivy
      html
      vimscript
@@ -81,6 +82,11 @@ This function should only modify configuration layer settings."
                                     monokai-light-theme
                                     monokai-dark-theme
                                     neotree
+                                    rtags
+                                    helm-rtags
+                                    ivy-rtags
+                                    company-rtags
+                                    flycheck-rtags
                                     eyebrowse
                                     ycmd
                                     octave
@@ -88,6 +94,7 @@ This function should only modify configuration layer settings."
                                     auto-complete
                                     pangu-spacing
                                     org-present
+                                    orgit
                                     spacemacs-theme
                                     spacemacs-purpose-popwin
                                     gmail-message-mode
@@ -167,7 +174,8 @@ It should only modify the values of Spacemacs settings."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(solarized-dark
+   dotspacemacs-themes '(
+                         solarized-dark
                          solarized-light
                          spacemacs-light
                          spacemacs-dark)

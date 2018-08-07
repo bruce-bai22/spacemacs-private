@@ -30,6 +30,25 @@
 ;;; Code:
 
 (defconst sky-python-packages
-  '())
+  '(;; exec-path-from-shell
+    ;; python
+    ;; company
+    )
+  )
+
+;; (defun sky-python/init-exec-path-from-shell ()
+;;   (use-package exec-path-from-shell
+;;     :init
+;;     (exec-path-from-shell-initialize)))
+
+;; (defun sky-python/post-init-python ()
+;;   (add-hook 'python-mode-hook #'lsp-python-enable)
+;;   (add-hook 'python-mode-hook (lambda () (lsp-mode 1))))
+
+;; (defun sky-python/post-init-company ()
+;;   (setq company-backends nil)
+;;   (spacemacs|add-company-backends
+;;     :backends company-lsp
+;;     :modes python-mode))
 
 ;;; packages.el ends here

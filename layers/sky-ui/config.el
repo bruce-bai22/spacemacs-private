@@ -18,5 +18,3 @@
 ;; 编程模式和文本模式下开启 which-function-mode. 就是底部显示的当前光标位于哪个函数下面
 (add-hook 'prog-mode-hook 'which-function-mode)
 (add-hook 'text-mode-hook 'which-function-mode)
-
-(setq spacemacs-show-trailing-whitespace nil)

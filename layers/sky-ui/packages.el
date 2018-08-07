@@ -33,6 +33,7 @@
   '(linum
     hungry-delete
     lispy
+    whitespace
     mmm-mode))
 
 (defun sky-ui/post-init-linum ()
@@ -54,5 +55,9 @@
   (spacemacs|use-package-add-hook mmm-mode
     :post-init
     (spacemacs|diminish mmm-mode "Ⓜ" "M")))
+
+;; 配置默认不显示空白字符
+(defun sky-ui/post-init-whitespace ()
+  (setq spacemacs-show-trailing-whitespace nil))
 
 ;;; packages.el ends here

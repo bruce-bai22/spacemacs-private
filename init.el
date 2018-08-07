@@ -32,6 +32,8 @@ This function should only modify configuration layer settings."
    '(
      git
      ivy
+     python
+     lsp
      html
      vimscript
      ruby

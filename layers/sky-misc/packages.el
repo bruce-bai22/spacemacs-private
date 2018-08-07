@@ -33,9 +33,11 @@
   '(youdao-dictionary
     paradox))
 
+;; 有道词典搜索单词
 (defun sky-misc/post-init-youdao-dictionary ()
   (spacemacs/set-leader-keys "oy" 'youdao-dictionary-search-at-point+))
 
+;; paradox 是包管理工具，其会去 github 拉取每个包的 star 数
 (defun sky-misc/post-init-paradox ()
   (with-eval-after-load 'paradox
     (setq paradox-automatically-star nil)

@@ -1,4 +1,4 @@
-;;; packages.el --- sky-highlighter layer packages file for Spacemacs.
+;;; config.el --- sky-highlighter layer packages file for Spacemacs.
 ;;
 ;; Copyright (c) 2012-2017 Sylvain Benner & Contributors
 ;;

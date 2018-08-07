@@ -30,20 +30,21 @@
 ;;; Code:
 
 (defconst sky-prog-basis-packages
-  '(counsel-gtags
+  '(
+    ;; counsel-gtags 不再使用，算不上好用，用 lsp 来进行补全，无法使用的，就是用专业的 IDE
     ;; sky-gtags 不再使用，使用 counsel-gtags，TAGS 文件也不在存放在 ~/.spacemacs.d/.tags 下
     flycheck
     company
     hungry-delete))
 
-(defun sky-prog-basis/init-counsel-gtags ()
-  (use-package counsel-gtags
-    :defer t
-    :init
-    (add-hook 'prog-mode-hook 'counsel-gtags-mode)
-    :bind (:map counsel-gtags-mode-map
-                ("C-;" . counsel-gtags-go-backward)
-                ("C-'" . counsel-gtags-go-forward))))
+;; (defun sky-prog-basis/init-counsel-gtags ()
+;;   (use-package counsel-gtags
+;;     :defer t
+;;     :init
+;;     (add-hook 'prog-mode-hook 'counsel-gtags-mode)
+;;     :bind (:map counsel-gtags-mode-map
+;;                 ("C-;" . counsel-gtags-go-backward)
+;;                 ("C-'" . counsel-gtags-go-forward))))
 
 (defun sky-prog-basis/post-init-flycheck ()
   (setq flycheck-display-errors-delay 1.0)

@@ -89,6 +89,9 @@ This function should only modify configuration layer settings."
                                     counsel-gtags
                                     ivy-rtags
                                     company-rtags
+                                    company-gtags
+                                    company-etags
+                                    company-anaconda
                                     flycheck-rtags
                                     eyebrowse
                                     ycmd

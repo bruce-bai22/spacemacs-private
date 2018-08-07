@@ -12,6 +12,8 @@
 (configuration-layer/declare-layers '(sky-prog-basis
                                       sky-c-c++
                                       sky-javascript
+                                      sky-nodejs
+                                      sky-python
                                       sky-lisp
                                       sky-edit
                                       sky-ui

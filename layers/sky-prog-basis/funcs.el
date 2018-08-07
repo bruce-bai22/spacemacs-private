@@ -29,24 +29,11 @@
 
 ;;; Code:
 
-;; Gtags
-;; (defun spacemacs/counsel-gtags-define-keys-for-mode (mode)
-;;   "为 major mode：mode 设置 counsel-gtags 快捷键"
-;;   (when (fboundp mode)
-;;     (spacemacs/set-leader-keys-for-major-mode mode
-;;       "gc" 'counsel-gtags-create-tags
-;;       "gD" 'counsel-gtags-find-definition
-;;       "gr" 'counsel-gtags-find-reference
-;;       "gs" 'counsel-gtags-find-symbol
-;;       "gf" 'counsel-gtags-find-file
-;;       "gu" 'counsel-gtags-update-tags
-;;       "gd" 'counsel-gtags-dwim)))
-
 ;; 设置默认的 company backends
 ;; (defun sky-toggle-default-company-backends ()
 ;;   (interactive)
 ;;   (spacemacs/toggle-auto-completion-on)
 ;;   (if company-mode
-;;       (setq company-backends '((company-gtags company-etags company-dabbrev)))))
+;;       (setq company-backends '((company-dabbrev)))))
 
 ;; funcs.el ends here.

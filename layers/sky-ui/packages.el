@@ -32,7 +32,6 @@
 (defconst sky-ui-packages
   '(linum
     hungry-delete
-    ;; counsel-gtags
     lispy
     mmm-mode))
 
@@ -41,11 +40,6 @@
   (add-hook 'prog-mode-hook 'linum-mode))
 
 ;; 下面的配置都是在 space-line 中为不同模式提供 minor-mode 的字符表示
-;; (defun sky-ui/pre-init-counsel-gtags ()
-;;   (spacemacs|use-package-add-hook counsel-gtags
-;;     :post-init
-;;     (spacemacs|diminish counsel-gtags-mode "Ⓖ" "G")))
-
 (defun sky-ui/pre-init-hungry-delete ()
   (spacemacs|use-package-add-hook hungry-delete
     :post-init

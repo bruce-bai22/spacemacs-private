@@ -86,6 +86,7 @@ This function should only modify configuration layer settings."
                                     neotree
                                     rtags
                                     helm-rtags
+                                    counsel-gtags
                                     ivy-rtags
                                     company-rtags
                                     flycheck-rtags

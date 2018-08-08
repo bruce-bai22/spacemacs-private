@@ -45,7 +45,7 @@
   (add-hook 'python-mode-hook
             '(lambda ()
                ;; Use `ignore-errors' avoid LSP failed.
-               (ignore-errors (lsp-python-enable()))
+               (ignore-errors (lsp-python-enable))
                )))
 
 ;;; packages.el ends here

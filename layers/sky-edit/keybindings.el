@@ -13,3 +13,8 @@
 
 ;; 取消搜索高亮
 (spacemacs/set-leader-keys "nl" 'evil-ex-nohighlight)
+
+;; 上一位置、下一位置修改快捷键
+(global-set-key (kbd "C-o") nil)
+(global-set-key (kbd "C-;") 'evil-jump-backward)
+(global-set-key (kbd "C-'") 'evil-jump-forward)

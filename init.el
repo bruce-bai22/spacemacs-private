@@ -32,7 +32,8 @@ This function should only modify configuration layer settings."
    '(
      git
      ivy
-     python
+     (python :variables
+             python-backend 'lsp)
      lsp
      html
      vimscript

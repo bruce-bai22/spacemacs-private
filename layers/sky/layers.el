@@ -13,10 +13,10 @@
                                       sky-c-c++
                                       sky-javascript
                                       sky-nodejs
-                                      sky-python
                                       sky-lisp
                                       sky-edit
                                       sky-ui
                                       sky-misc
                                       sky-org
+                                      sky-python
                                       sky-highlighter))

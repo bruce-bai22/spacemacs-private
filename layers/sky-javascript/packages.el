@@ -30,6 +30,11 @@
 ;;; Code:
 
 (defconst sky-javascript-packages
-  '())
+  '(js2-mode))
+
+(defun sky-javascript/post-init-js2-mode ()
+  (add-hook 'js2-mode-hook
+            '(lambda ()
+               (ignore-errors (lsp-javascript-typescript-enable)))))
 
 ;;; packages.el ends here

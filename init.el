@@ -30,7 +30,6 @@ This function should only modify configuration layer settings."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
-     git
      ivy
      (python :variables
              python-backend 'lsp)
@@ -38,13 +37,17 @@ This function should only modify configuration layer settings."
      html
      vimscript
      ruby
-     javascript
+     (javascript :variables
+                 javascript-backend 'lsp)
      (markdown :variables
                markdown-live-preview-engine 'vmd)
-     swift
-     ;; git ;; Magit is too slow in large project.
+     ;; swift ;; Do not need highlight for swift in emacs, just open the file and search sth.
+
+     ;; Magit is too slow in large project.
+     (git :variables
+          git-magit-status-fullscreen t)
      ;; php
-     command-log
+     ;; command-log ;; I think I don't need it any more, I have manage most shotcuts. 
      auto-completion
      (better-defaults :variables
                       better-defaults-move-to-end-of-code-first t)
@@ -56,9 +59,9 @@ This function should only modify configuration layer settings."
               chinese-enable-youdao-dict t
               chinese-enable-fcitx t)
      (spell-checking :variables
-                     spell-checking-enable-by-default nil)
+                     spell-checking-enable-by-default t)
      (syntax-checking :variables
-                      syntax-checking-enable-by-default nil)
+                      syntax-checking-enable-by-default t)
      (spacemacs-layouts :variables
                         layouts-enable-autosave nil)
      org
@@ -182,8 +185,8 @@ It should only modify the values of Spacemacs settings."
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(
-                         solarized-dark
                          solarized-light
+                         solarized-dark
                          spacemacs-light
                          spacemacs-dark)
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',

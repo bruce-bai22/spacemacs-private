@@ -31,7 +31,7 @@
 
 (defconst sky-org-packages
   '(org
-    ;; (org-agenda :location built-in)
+    (org-agenda :location built-in)
     ))
 
 (defun sky-org/post-init-org ()
@@ -49,5 +49,8 @@
 ;;       :bindings
 ;;       "d" 'org-agenda-view-mode-dispatch))
 ;;   )
+(defun sky-org/post-init-org-agenda ()
+  (with-eval-after-load 'org-agenda
+    (define-key org-agenda-mode-map (kbd "C-c C-e") #'org-agenda-previous-date-line)))
 
 ;;; packages.el ends here

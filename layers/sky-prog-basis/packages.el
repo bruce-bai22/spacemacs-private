@@ -33,7 +33,8 @@
   '(
     flycheck
     company
-    hungry-delete))
+    hungry-delete
+    magit))
 
 (defun sky-prog-basis/post-init-flycheck ()
   (setq flycheck-display-errors-delay 1.0)
@@ -52,5 +53,8 @@
 
 (defun sky-prog-basis/post-init-hungry-delete ()
   (add-hook 'prog-mode-hook 'hungry-delete-mode))
+
+(defun sky-prog-basis/post-init-magit ()
+  (setq magit-repository-directories '("~/Work/")))
 
 ;;; packages.el ends here

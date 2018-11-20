@@ -35,7 +35,8 @@
     dired
     occur-mode
     counsel
-    evil))
+    evil
+    flyspell))
 
 (defun sky-edit/post-init-fcitx ()
   (with-eval-after-load 'fcitx
@@ -88,6 +89,11 @@
     (define-key evil-insert-state-map (kbd "C-k") 'kill-line)
     (define-key evil-insert-state-map (kbd "C-d") 'delete-char)
 
+    ;; 上一位置、下一位置修改快捷键
+    (global-set-key (kbd "C-o") nil)
+    (global-set-key (kbd "C-;") 'evil-jump-backward)
+    (global-set-key (kbd "C-'") 'evil-jump-forward)
+
     ;; 使用 evil-search 和Symbol Highlight Transient State时，自动执行 zz 使光标居中，类似于vim的nzz
     (defadvice evil-search-next (after advice-for-evil-search-next activate)
       (evil-scroll-line-to-center (line-number-at-pos)))
@@ -97,5 +103,11 @@
       (evil-scroll-line-to-center (line-number-at-pos)))
     (defadvice spacemacs/symbol-highlight-transient-state/spacemacs/quick-ahs-backward (after advice-for-ahs-backward activate)
       (evil-scroll-line-to-center (line-number-at-pos)))))
+
+(defun sky-edit/post-init-flyspell ()
+  (with-eval-after-load 'flyspell
+    (define-key flyspell-mode-map (kbd "C-o") 'flyspell-auto-correct-previous-word)
+    (define-key flyspell-mode-map (kbd "C-;") 'evil-jump-backward)
+    (define-key flyspell-mode-map (kbd "C-'") 'evil-jump-forward)))
 
 ;;; packages.el ends here

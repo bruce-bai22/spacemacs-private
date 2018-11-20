@@ -51,6 +51,7 @@
     :post-init
     (spacemacs|diminish lispy-mode "Ⓛ" "L")))
 
+;; 这里只是为了将 mmm-mode 的 mode 标识 diminish 为 M
 (defun sky-ui/pre-init-mmm-mode ()
   (spacemacs|use-package-add-hook mmm-mode
     :post-init

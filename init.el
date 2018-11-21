@@ -38,7 +38,11 @@ This function should only modify configuration layer settings."
      vimscript
      ruby
      (javascript :variables
-                 javascript-backend 'lsp)
+                 javascript-backend 'lsp
+                 javascript-fmt-tool 'web-beautify
+                 js2-basic-offset 2
+                 js-indent-level 2
+                 node-add-modules-path t)
      (markdown :variables
                markdown-live-preview-engine 'vmd)
      ;; swift ;; Do not need highlight for swift in emacs, just open the file and search sth.
@@ -96,6 +100,7 @@ This function should only modify configuration layer settings."
                                     company-gtags
                                     company-etags
                                     company-anaconda
+                                    company-tern
                                     flycheck-rtags
                                     eyebrowse
                                     ycmd
@@ -108,6 +113,7 @@ This function should only modify configuration layer settings."
                                     spacemacs-theme
                                     spacemacs-purpose-popwin
                                     gmail-message-mode
+                                    skewer-mode
                                     )
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.

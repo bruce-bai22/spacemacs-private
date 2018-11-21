@@ -30,15 +30,14 @@
 ;;; Code:
 
 (defconst sky-ui-packages
-  '(linum
+  '(display-line-numbers
     hungry-delete
     lispy
     whitespace
     mmm-mode))
 
-(defun sky-ui/post-init-linum ()
-  ;; 配置 linum 只有在编程模式下开启
-  (add-hook 'prog-mode-hook 'linum-mode))
+(defun sky-ui/post-init-display-line-numbers ()
+    (add-hook 'prog-mode-hook 'display-line-numbers-mode))
 
 ;; 下面的配置都是在 space-line 中为不同模式提供 minor-mode 的字符表示
 (defun sky-ui/pre-init-hungry-delete ()

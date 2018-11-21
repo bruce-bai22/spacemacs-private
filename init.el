@@ -88,6 +88,7 @@ This function should only modify configuration layer settings."
                                     chinese-word-at-point
                                     chinese-wbim
                                     fancy-battery
+                                    linum
                                     google-translate
                                     monokai-light-theme
                                     monokai-dark-theme
@@ -114,6 +115,7 @@ This function should only modify configuration layer settings."
                                     spacemacs-purpose-popwin
                                     gmail-message-mode
                                     skewer-mode
+                                    magit-svn
                                     )
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.

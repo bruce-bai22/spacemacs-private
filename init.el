@@ -37,6 +37,9 @@ This function should only modify configuration layer settings."
      html
      vimscript
      ruby
+     (sql :variables
+          sql-capitalize-keywords t
+          sql-capitalize-keywords-blacklist '())
      (javascript :variables
                  javascript-backend 'lsp
                  javascript-fmt-tool 'web-beautify

@@ -31,7 +31,8 @@
 
 (defconst sky-misc-packages
   '(youdao-dictionary
-    paradox))
+    paradox
+    sql))
 
 ;; 有道词典搜索单词
 (defun sky-misc/post-init-youdao-dictionary ()
@@ -42,5 +43,25 @@
   (with-eval-after-load 'paradox
     (setq paradox-automatically-star nil)
     (setq paradox-github-token "fa6ba6c8cdc64ae5a1aef7e6906203ff1663104a")))
+
+(defun sky-misc/post-init-sql ()
+  (setq sql-mysql-program "/usr/local/mysql/bin/mysql")
+  (setq sql-connection-alist
+        '(("sky-local-test@localhost"
+           (sql-product
+            (quote mysql))
+           (sql-user "root")
+           (sql-password "baitianyu")
+           (sql-database "")
+           (sql-server "localhost")
+           (sql-port 3306))
+          ("push-server@10.122.134.164"
+           (sql-product
+            (quote mysql))
+           (sql-user "msgpush")
+           (sql-password "msgpush")
+           (sql-database "")
+           (sql-server "10.122.134.164")
+           (sql-port 3306)))))
 
 ;;; packages.el ends here

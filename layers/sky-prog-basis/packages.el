@@ -34,7 +34,8 @@
     flycheck
     company
     hungry-delete
-    magit))
+    magit
+    dockerfile-mode))
 
 (defun sky-prog-basis/post-init-flycheck ()
   (setq flycheck-display-errors-delay 1.0)
@@ -56,5 +57,10 @@
 
 (defun sky-prog-basis/post-init-magit ()
   (setq magit-repository-directories '("~/Work/")))
+
+(defun sky-prog-basis/init-dockerfile-mode ()
+  (use-package dockerfile-mode
+    :defer t
+    :init))
 
 ;;; packages.el ends here

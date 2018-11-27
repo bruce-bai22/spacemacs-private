@@ -29,7 +29,7 @@ This function should only modify configuration layer settings."
    dotspacemacs-configuration-layer-path '()
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(
+   '(yaml
      ivy
      (python :variables
              python-backend 'lsp)
@@ -102,6 +102,7 @@ This function should only modify configuration layer settings."
                                     ivy-rtags
                                     company-rtags
                                     company-gtags
+                                    company-c-headers
                                     company-etags
                                     company-anaconda
                                     company-tern

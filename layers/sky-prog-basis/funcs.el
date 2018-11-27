@@ -29,11 +29,4 @@
 
 ;;; Code:
 
-;; 设置默认的 company backends
-;; (defun sky-toggle-default-company-backends ()
-;;   (interactive)
-;;   (spacemacs/toggle-auto-completion-on)
-;;   (if company-mode
-;;       (setq company-backends '((company-dabbrev)))))
-
 ;; funcs.el ends here.

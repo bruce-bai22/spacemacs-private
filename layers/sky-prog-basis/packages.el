@@ -35,15 +35,26 @@
     company
     hungry-delete
     magit
-    dockerfile-mode))
+    dockerfile-mode
+    company-shell))
 
 (defun sky-prog-basis/post-init-flycheck ()
   (setq flycheck-display-errors-delay 1.0)
   (setq flycheck-idle-change-delay 3.0))
 
+(defun sky-prog-basis/init-company-shell ()
+  (use-package company-shell
+    :defer t
+    :init))
+
 (defun sky-prog-basis/post-init-company ()
-  ;; 某些没有开启 auto-complete 的 mode 下，使用 SPC-t a 开启补全后，需要设置 backends，否则无法补全
-  ;; (spacemacs/set-leader-keys "ob" 'sky-toggle-default-company-backends)
+  (with-eval-after-load 'sh-mode
+    (lambda () spacemacs/toggle-auto-completion-on))
+
+  (spacemacs|add-company-backends :backends (company-dabbrev-code company-keywords)
+                                  :modes sql-mode)
+  (spacemacs|add-company-backends :backends (company-shell company-dabbrev-code)
+                                  :modes sh-mode)
   (with-eval-after-load 'company
     ;; 定义 company mode 上下选择补全项时使用 C-n/C-p 替换 M-n/M-p
     (define-key company-active-map (kbd "C-n") #'company-select-next)

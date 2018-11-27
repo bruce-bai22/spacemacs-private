@@ -55,7 +55,9 @@ This function should only modify configuration layer settings."
           git-magit-status-fullscreen t)
      ;; php
      ;; command-log ;; I think I don't need it any more, I have manage most shotcuts. 
-     auto-completion
+     (auto-completion :variables
+                      auto-completion-enable-help-tooltip "manual"
+                      auto-completion-enable-sort-by-usage t)
      (better-defaults :variables
                       better-defaults-move-to-end-of-code-first t)
      emacs-lisp
@@ -106,6 +108,7 @@ This function should only modify configuration layer settings."
                                     company-etags
                                     company-anaconda
                                     company-tern
+                                    auto-complete
                                     flycheck-rtags
                                     eyebrowse
                                     ycmd

@@ -43,7 +43,7 @@
     :defer t
     :init
     (add-hook 'indium-debugger-mode-hook 'indium-interaction-mode)
-    (spacemacs/set-leader-keys-for-minor-mode 'indium-interaction-mode
+    (spacemacs/set-leader-keys-for-major-mode 'js2-mode
       "bb" 'indium-add-breakpoint
       "bc" 'indium-add-conditional-breakpoint
       "bk" 'indium-remove-breakpoint
@@ -57,7 +57,6 @@
       "er" 'indium-eval-region
       "eb" 'indium-eval-buffer
       "ez" 'indium-switch-to-repl-buffer
-      "ed" 'indium-switch-to-debugger
-      )))
+      "ed" 'indium-switch-to-debugger)))
 
 ;;; packages.el ends here

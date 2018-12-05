@@ -62,6 +62,13 @@
            (sql-password "msgpush")
            (sql-database "")
            (sql-server "10.122.134.164")
-           (sql-port 3306)))))
+           (sql-port 3306))
+          ("docker-sky-local-test"
+           (sql-product 'mysql)
+           (sql-user "root")
+           (sql-password "")
+           (sql-database "")
+           (sql-server "0.0.0.0")
+           (sql-port 13306)))))
 
 ;;; packages.el ends here

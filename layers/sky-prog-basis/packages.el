@@ -51,9 +51,9 @@
   (with-eval-after-load 'sh-mode
     (lambda () spacemacs/toggle-auto-completion-on))
 
-  (spacemacs|add-company-backends :backends (company-dabbrev-code company-keywords)
-                                  :modes sql-mode)
-  (spacemacs|add-company-backends :backends (company-shell company-dabbrev-code)
+  (spacemacs|add-company-backends :backends company-dabbrev-code
+                                  :modes sql-mode sql-interactive-mode)
+  (spacemacs|add-company-backends :backends (company-shell company-dabbrev-code company-files)
                                   :modes sh-mode)
   (with-eval-after-load 'company
     ;; 定义 company mode 上下选择补全项时使用 C-n/C-p 替换 M-n/M-p

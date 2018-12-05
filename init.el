@@ -30,7 +30,10 @@ This function should only modify configuration layer settings."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(yaml
+     neotree
      ivy
+     (ibuffer :variables
+              ibuffer-group-buffers-by 'modes)
      (python :variables
              python-backend 'lsp)
      lsp
@@ -52,7 +55,7 @@ This function should only modify configuration layer settings."
 
      ;; Magit is too slow in large project.
      (git :variables
-          git-magit-status-fullscreen t)
+          git-magit-status-fullscreen nil)
      ;; php
      ;; command-log ;; I think I don't need it any more, I have manage most shotcuts. 
      (auto-completion :variables
@@ -74,7 +77,9 @@ This function should only modify configuration layer settings."
      (spacemacs-layouts :variables
                         layouts-enable-autosave nil)
      org
-     (ranger :variables ranger-show-preview t)
+
+     ;; try neotree, maybe better than ranger
+     ;; (ranger :variables ranger-show-preview t)
      (c-c++ :variables
             c-c++-default-mode-for-headers 'c++-mode
             c-c++-enable-clang-support t)
@@ -97,7 +102,6 @@ This function should only modify configuration layer settings."
                                     google-translate
                                     monokai-light-theme
                                     monokai-dark-theme
-                                    neotree
                                     rtags
                                     helm-rtags
                                     counsel-gtags
@@ -110,7 +114,6 @@ This function should only modify configuration layer settings."
                                     company-tern
                                     auto-complete
                                     flycheck-rtags
-                                    eyebrowse
                                     ycmd
                                     octave
                                     osx-dictionary

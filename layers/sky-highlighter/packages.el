@@ -40,14 +40,13 @@
 
 (defun sky-highlighter/init-ov-highlighter ()
   (use-package ov-highlighter
-    :bind (("H-h" . ov-highlighter/body))
+    :bind (("H-h" . ov-highlight/body))
     :config
-    (setq ov-highlight-disable-save t)
     ;; config colors
-    (ov-make-highlight "red" '(:background "#f08080"))
-    (ov-make-highlight "green" '(:background "#c1fcc1"))
-    (ov-make-highlight "yellow" '(:background "#ffec8b"))
-    (ov-make-highlight "blue" '(:background "#87ceff"))
-    (ov-make-highlight "pink" '(:background "#ffb5c5"))))
+    (ov-highlight-make "red" '(:background "#f08080"))
+    (ov-highlight-make "green" '(:background "#c1fcc1"))
+    (ov-highlight-make "yellow" '(:background "#ffec8b"))
+    (ov-highlight-make "blue" '(:background "#87ceff"))
+    (ov-highlight-make "pink" '(:background "#ffb5c5"))))
 
 ;;; packages.el ends here

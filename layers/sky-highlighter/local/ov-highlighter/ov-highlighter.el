@@ -1,13 +1,13 @@
-;;; ov-highlighter.el --- Highlight text with overlays  -*- lexical-binding: t; -*-
+;;; ov-highlight.el --- Highlight text with overlays  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2016  John Kitchin
+;; Copyright (C) 2016, 2017  John Kitchin
 
 ;; Author: John Kitchin <jkitchin@andrew.cmu.edu>
-;; URL: https://github.com/jkitchin/scimax/ov-highlighter.el
+;; URL: https://github.com/jkitchin/ov-highlighter
 
 ;; Version: 0.1.0
-;; Keywords:  highlight
-;; Package-Requires: ((hydra "0.13.2") (dash) (s))
+;; Keywords:  faces
+;; Package-Requires: ((emacs "25") (hydra "0.14.0") (dash "2.12.0") (s "1.12.0"))
 ;; This file is not currently part of GNU Emacs.
 
 ;; This program is free software; you can redistribute it and/or
@@ -30,7 +30,7 @@
 ;; them using overlays that are locally stored.
 
 ;; There is a hydra menu to make accessing all the commands below convenient:
-;; `ov-highlighter/body'. I suggest you bind it to a key like H-h.
+;; `ov-highlight/body'. I suggest you bind it to a key like H-h.
 
 ;; You can select text, and run these commands to add highlighting to it:
 ;; `ov-highlight-yellow'
@@ -59,49 +59,69 @@
 ;; You can convert the highlights to html with `ov-highlight-html' which will
 ;; convert the buffer to an html file and open it in a browser.
 
-;; Define your own custom highlight functions with `ov-make-highlight'. See the
+;; Define your own custom highlight functions with `ov-highlight-make'. See the
 ;; predefined functions for examples.
 
-;; ov-highlighter uses a local save-buffer-hook to update the data when you save
+;; ov-highlight uses a local save-buffer-hook to update the data when you save
 ;; the buffer. It also uses local file variables to load the highlights when you
 ;; open the file. The data is saved in a single line. I don't know what the
 ;; limitation of this is.
 
-;; Known issues: You cannot cut and paste these highlights. Fixing this would
-;; involve changing the kill and yank functions to capture overlays in the kill
-;; region, and remake them in the yanked region.
+;; Known issues:
+;;
+;; 1. You cannot export the highlights in org-mode. They are not part of the
+;; org-markup.
+;;
+;; 2. If you refile a heading with highlights, you will lose the highlights.
+;;
+;; 3. If you reorder the headings (other than by copy and paste) you will lose
+;; the highlights.
 
 (require 'hydra)
 (require 'ov)
+(require 'flyspell)
+
 
 ;;; Code:
-;;;###autoload
-(defmacro ov-make-highlight (label face &rest properties)
+(defvar ov-highlight-data nil
+  "Contains highlight data. Normally set as a local file variable.")
+
+
+(defvar ov-highlight-source nil
+  "A cons cell of the buffer to get highlights from.")
+
+
+(defvar ov-highlight-window-configuration nil
+  "Stores the window configuration.")
+
+
+(defmacro ov-highlight-make (label face &rest properties)
   "Create a user-defined highlight function.
-The function will be called `ov-highlight-LABEL', and it will
-apply FACE to the selected region. FACE can be an anonymous face,
-or a function that returns one. PROPERTIES is a list of symbols
-and properties. If the property is a function, it will be
-evaluated. The function takes no arguments."
+LABEL is the name of the highlight. The function will be called
+`ov-highlight-LABEL', and it will apply FACE to the selected
+region. FACE can be an anonymous face, or a function that returns
+one. PROPERTIES is a list of symbols and properties. If the
+property is a function, it will be evaluated. The function takes
+no arguments."
   `(defun ,(intern (format "ov-highlight-%s" label)) (beg end)
      ,(format "Apply the face %S to the region selected by BEG and END" face)
      (interactive "r")
      (flyspell-delete-region-overlays beg end)
      ;; add a local hook to make sure it gets saved
-     (add-hook 'before-save-hook 'ov-highlight-save nil t)
+     ;; (add-hook 'before-save-hook 'ov-highlight-save nil t)
      (let ((face ,face)
 	   (properties (quote ,properties))
-	   (bounds (bounds-of-thing-at-point 'word)))
-       (if (and  (ov-at) (overlay-get (ov-at) 'ov-highlight))
+	   (bounds (bounds-of-thing-at-point 'word))
+	   prop val)
+       (if (and  (ov-at) (overlay-get (ov-at) 'ov-highlighter))
 	   ;; add face properties to current overlay face properties.
-	   (let* ((current-properties (overlay-properties (ov-at)))
+	   (let* (;; (current-properties (overlay-properties (ov-at)))
 		  (cf (overlay-get (ov-at) 'face))
 		  (fp (if (facep cf) (loop for (p . v) in (face-all-attributes cf)
 					   if v
 					   append
 					   (list p v))
-			cf))
-		  prop val)
+			cf)))
 	     (while face
 	       (setq prop (pop face)
 		     val (pop face))
@@ -125,7 +145,7 @@ evaluated. The function takes no arguments."
 	     (overlay-put ov prop (if (functionp val)
 				      (funcall val)
 				    val)))
-	   (overlay-put ov 'ov-highlight t)
+	   (overlay-put ov 'ov-highlighter t)
 	   (overlay-put ov 'ov-type ,label)
 	   (set-buffer-modified-p t)
 	   (let ((p (point)))
@@ -147,44 +167,47 @@ evaluated. The function takes no arguments."
 ;; for details on setting face attributes
 
 ;; ** highlighters font effects
-(ov-make-highlight "bold" '(:weight bold))
-(ov-make-highlight "italic" '(:slant italic))
-(ov-make-highlight "underline" '(:underline t))
-(ov-make-highlight "strikethrough" '(:strike-through t))
-(ov-make-highlight "box" '(:box t))
-(ov-make-highlight "redbox" '(:box (:line-width 2 :color "red" :style released-button)))
-(ov-make-highlight "comic-sans" '(:family "Comic Sans MS"))
+(ov-highlight-make "bold" '(:weight bold))
+(ov-highlight-make "italic" '(:slant italic))
+(ov-highlight-make "underline" '(:underline t))
+(ov-highlight-make "strikethrough" '(:strike-through t))
+(ov-highlight-make "box" '(:box t))
+(ov-highlight-make "redbox" '(:box (:line-width 2 :color "red" :style released-button)))
+(ov-highlight-make "comic-sans" '(:family "Comic Sans MS"))
 
-(ov-make-highlight "yellow" '(:background "Yellow"))
-(ov-make-highlight "blue" '(:background "LightBlue"))
-(ov-make-highlight "pink" '(:background "Pink"))
-(ov-make-highlight "green" '(:background "Darkolivegreen1"))
+(ov-highlight-make "yellow" '(:background "Yellow"))
+(ov-highlight-make "blue" '(:background "LightBlue"))
+(ov-highlight-make "pink" '(:background "Pink"))
+(ov-highlight-make "green" '(:background "Darkolivegreen1"))
 
-(ov-make-highlight "delete" '(:foreground "red" :strike-through t))
-(ov-make-highlight "insert" '(:foreground "blue"))
+(ov-highlight-make "delete" '(:foreground "red" :strike-through t))
+(ov-highlight-make "insert" '(:foreground "blue"))
 
 ;; A user-selected color
-(ov-make-highlight "color" (lambda ()
-			     (list :background
-				   (plist-get
-				    (get-text-property
-				     0 'face
-				     (completing-read
-				      "Color: "
-				      (progn
-					(save-selected-window
-					  (list-colors-display))
-					(prog1
-					    (with-current-buffer (get-buffer "*Colors*")
-					      (mapcar (lambda (line)
-							(append (list line)
-								(s-split " " line t)))
-						      (s-split "\n" (buffer-string))))
-					  (kill-buffer "*Colors*")))))
-				    :background))))
+(ov-highlight-make "color"
+		   (lambda ()
+		     (let* ((candidates (progn
+					  (save-selected-window
+					    (list-colors-display))
+					  (prog1
+					      (with-current-buffer (get-buffer "*Colors*")
+						(mapcar (lambda (line)
+							  (append (list line)
+								  (s-split " " line t)))
+							(s-split "\n" (buffer-string))))
+					    (kill-buffer "*Colors*"))))
+			    (choice (completing-read
+				     "Color: "
+				     candidates)))
+		       (list :background
+			     (plist-get
+			      (get-text-property
+			       0 'face
+			       (car (cdr (assoc choice candidates))))
+			      :background)))))
 
 ;; Change font color
-(ov-make-highlight "foreground" (lambda ()
+(ov-highlight-make "foreground" (lambda ()
 				  (list :foreground
 					(plist-get (get-text-property
 						    0 'face
@@ -206,17 +229,17 @@ evaluated. The function takes no arguments."
 							 (kill-buffer "*Colors*")))))
 						   :background))))
 
-(defvar *ov-window-configuration* nil
-  "Stores the window configuration so we can later restore it.")
+(defvar ov-highlight-window-configuration nil
+  "Stores the window configuration so we can restore it.")
 
-(ov-make-highlight "comment" '(:background "Orange1")
+(ov-highlight-make "comment" '(:background "Orange1")
 		   mouse-face highlight
 		   local-map (lambda ()
 			       (let ((map (make-sparse-keymap))
 				     (edit-func
 				      (lambda ()
 					(interactive)
-					(setq *ov-window-configuration*
+					(setq ov-highlight-window-configuration
 					      (current-window-configuration))
 					(let ((cb (current-buffer))
 					      (current-note (overlay-get (ov-at) 'help-echo)))
@@ -240,13 +263,13 @@ evaluated. The function takes no arguments."
 							      (point-min) (point-max))))
 						(kill-buffer)
 						(set-window-configuration
-						 *ov-window-configuration*)
-						(setq n*ov-window-configuration* nil)
+						 ov-highlight-window-configuration)
+						(setq ov-highlight-window-configuration nil)
 						(overlay-put (ov-at) 'help-echo tooltip))))))))
 				 (define-key map [mouse-1] edit-func)
 				 map))
 		   help-echo (lambda ()
-			       (setq *ov-window-configuration* (current-window-configuration))
+			       (setq ov-highlight-window-configuration (current-window-configuration))
 			       (switch-to-buffer "*ov-note*")
 			       (erase-buffer)
 			       (org-mode)
@@ -273,37 +296,36 @@ evaluated. The function takes no arguments."
 				   (let ((tooltip (buffer-substring-no-properties
 						   (point-min) (point-max))))
 				     (kill-buffer)
-				     (set-window-configuration *ov-window-configuration*)
-				     (setq *ov-window-configuration* nil)
+				     (set-window-configuration ov-highlight-window-configuration)
+				     (setq ov-highlight-window-configuration nil)
 				     (overlay-put (if (ov-at)
 						      (ov-at)
 						    (ov-at (- (point) 1)))
 						  'help-echo tooltip))))))
 ;; font color
-(ov-make-highlight "red-fg" '(:foreground "red"))
+(ov-highlight-make "red-fg" '(:foreground "red"))
 
-(ov-make-highlight "typo" '(:background "PaleVioletRed1") help-echo "tpyo")
+(ov-highlight-make "typo" '(:background "PaleVioletRed1") help-echo "tpyo")
 
-(ov-make-highlight "font" (lambda ()
-			    (list :family
-				  (completing-read "Font: " (font-family-list)))))
+(ov-highlight-make "font" (lambda ()
+			      (list :family
+				    (completing-read "Font: " (font-family-list)))))
 
 ;; ** font size changes
-;;;###autoload
 (defun ov-highlight-increase-font-size (&optional arg)
   "Increase the font size of the overlay at point.
-When no overlay make one for the region or word at point.
-With numeric prefix set font to that size."
+When no overlay is at point make one for the region or word at
+point. With numeric prefix ARG set font to that size."
   (interactive "P")
   (let ((bounds (if (region-active-p)
 		    (cons (region-beginning) (region-end))
 		  (bounds-of-thing-at-point 'word))))
     (flyspell-delete-region-overlays (car bounds) (cdr bounds))
-    (add-hook 'before-save-hook 'ov-highlight-save nil t)
+    ;; (add-hook 'before-save-hook 'ov-highlight-save nil t)
     (if (ov-at)
 	;; overlay at point, update it
 	(progn
-	  (let* ((current-properties (overlay-properties (ov-at)))
+	  (let* (;; (current-properties (overlay-properties (ov-at)))
 		 (cf (overlay-get (ov-at) 'face))
 		 (fp (if (facep cf) (loop for (p . v) in (face-all-attributes cf)
 					  if v
@@ -313,7 +335,8 @@ With numeric prefix set font to that size."
 		 (ht (or arg (if (plist-get fp :height)
 				 (floor (* 1.1 (plist-get fp :height)))
 			       (* 1.1 (face-attribute 'default :height)))))
-		 prop val)
+		 ;; prop val
+		 )
 	    (plist-put fp :height ht)
 	    (message "Set height to %s." ht)
 	    (overlay-put (ov-at) 'face fp)))
@@ -340,18 +363,18 @@ With numeric prefix set font to that size."
 ;;;###autoload
 (defun ov-highlight-decrease-font-size (&optional arg)
   "Decrease the font size of the overlay at point.
-When no overlay make one for the region or word at point.
-With numeric prefix set font to that size."
+When no overlay is at the point make one for the region or word
+at point. With numeric prefix ARG set font to that size."
   (interactive "P")
   (let ((bounds (if (region-active-p)
 		    (cons (region-beginning) (region-end))
 		  (bounds-of-thing-at-point 'word))))
     (flyspell-delete-region-overlays (car bounds) (cdr bounds))
-    (add-hook 'before-save-hook 'ov-highlight-save nil t)
+    ;; (add-hook 'before-save-hook 'ov-highlight-save nil t)
     (if (ov-at)
 	;; overlay at point, update it
 	(progn
-	  (let* ((current-properties (overlay-properties (ov-at)))
+	  (let* (;; (current-properties (overlay-properties (ov-at)))
 		 (cf (overlay-get (ov-at) 'face))
 		 (fp (if (facep cf) (loop for (p . v) in (face-all-attributes cf)
 					  if (not (eq 'unspecified v))
@@ -361,14 +384,15 @@ With numeric prefix set font to that size."
 		 (ht (or arg (if (plist-get fp :height)
 				 (floor (* 0.9 (plist-get fp :height)))
 			       (* 0.9 (face-attribute 'default :height)))))
-		 prop val)
+		 ;; prop val
+		 )
 	    (plist-put fp :height ht)
 	    (overlay-put (ov-at) 'face fp)))
       (let ((ov (make-overlay (car bounds) (cdr bounds)))
 	    (ht (or arg (floor (* 0.9 (face-attribute 'default :height))))))
 	(overlay-put ov 'face (list :height ht))
 	(message "Set :height to %s." ht)
-	(overlay-put ov 'ov-highlight t)
+	(overlay-put ov 'ov-highlighter t)
 	(set-buffer-modified-p t)
 	(let ((p (point)))
 	  (when (mark)
@@ -388,7 +412,9 @@ With numeric prefix set font to that size."
 (defun ov-highlight-clear ()
   "Clear highlight at point."
   (interactive)
-  (delete-overlay (ov-at))
+  (when-let (ov (ov-at))
+    (delete-overlay ov))
+
   (set-buffer-modified-p t)
   (let ((buf (get-buffer "*ov-highlights*")))
     (when buf
@@ -401,30 +427,21 @@ With numeric prefix set font to that size."
   "Clear all highlighted text.
 They are really deleted when you save the buffer."
   (interactive)
-  (mapc 'delete-overlay (ov-get-highlight-overlays))
+  (mapc 'delete-overlay (ov-highlight-get-overlays))
   (set-buffer-modified-p t))
 
 
 ;; * List highlights
 
-(defun ov-get-highlight-overlays ()
+(defun ov-highlight-get-overlays ()
   "Return a list of the highlight overlays.
 The list is from first to last."
-  (reverse (-filter (lambda (ov) (overlay-get ov 'ov-highlight))
+  (reverse (-filter (lambda (ov) (overlay-get ov 'ov-highlighter))
 		    (overlays-in (point-min) (point-max)))))
 
 
-(defvar ov-highlight-source nil
-  "A cons cell of the buffer to get highlights from.")
-
-
-(defvar ov-highlight-window-configuration nil
-  "Stores the window configuration.")
-
-
-;;;###autoload
 (defun ov-highlight-display ()
-  "Display all highlights in the current buffer in a tabulated list form."
+  "Display the current overlays in the current buffer in a tabulated list form."
   (interactive)
   (save-buffer)
   (let ((buf (current-buffer)))
@@ -437,10 +454,10 @@ The list is from first to last."
 
 
 (defun ov-highlight-refresh-list ()
-  "Refresh the list of highlights in the buffer."
+  "Refresh the list of overlays in the buffer."
   (let ((highlights) (entries))
     (with-current-buffer ov-highlight-source
-      (setq highlights (ov-get-highlight-overlays))
+      (setq highlights (ov-highlight-get-overlays))
       (setq entries (loop for ov in highlights
 			  collect
 			  (list
@@ -459,7 +476,6 @@ The list is from first to last."
     (tabulated-list-print)))
 
 
-;;;###autoload
 (defun ov-highlight-jump ()
   "In list mode, jump to the highlight."
   (interactive)
@@ -470,15 +486,16 @@ The list is from first to last."
       (org-show-entry))))
 
 
-;;;###autoload
 (defvar ov-highlight-list-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key tabulated-list-mode-map (kbd "q") (lambda ()
-						    (interactive)
-						    (kill-buffer)
-						    (set-window-configuration
-						     ov-highlight-window-configuration)))
-    (define-key map (kbd "r") (lambda () (interactive) (ov-highlight-refresh-list)))
+    (define-key tabulated-list-mode-map (kbd "q")
+      (lambda ()
+	(interactive)
+	(kill-buffer)
+	(set-window-configuration
+	 ov-highlight-window-configuration)))
+    (define-key map (kbd "r")
+      (lambda () (interactive) (ov-highlight-refresh-list)))
     (define-key map (kbd "o") 'ov-highlight-jump)
     (define-key map (kbd "[mouse-1]") 'ov-highlight-jump)
     (define-key map (kbd "<return>") 'ov-highlight-jump)
@@ -494,16 +511,18 @@ The list is from first to last."
       (lambda ()
 	(interactive)
 	(ov-highlight-jump)
-	(setq *ov-window-configuration* (current-window-configuration))
-	(let ((cb (current-buffer))
+	(setq ov-highlight-window-configuration (current-window-configuration))
+	(let ( ;; (cb (current-buffer))
 	      (current-note (overlay-get (ov-at) 'help-echo)))
 	  (switch-to-buffer "*ov-note*")
 	  (erase-buffer)
 	  (org-mode)
 	  (insert (or current-note ""))
-	  (let ((map (make-sparse-keymap)))
-	    (setq header-line-format
-		  "Click here or type s-<return> to finish. C-x k to cancel."))
+	  ;; (let ((map (make-sparse-keymap)))
+	  ;;   (setq header-line-format
+	  ;; 	  "Click here or type s-<return> to finish. C-x k to cancel."))
+	  (setq header-line-format
+		"Click here or type s-<return> to finish. C-x k to cancel.")
 	  (local-set-key
 	   (kbd "C-x k")
 	   `(lambda ()
@@ -515,8 +534,8 @@ The list is from first to last."
 	      (interactive)
 	      (let ((tooltip (buffer-substring-no-properties (point-min) (point-max))))
 		(kill-buffer)
-		(set-window-configuration *ov-window-configuration*)
-		(setq *ov-window-configuration* nil)
+		(set-window-configuration ov-highlight-window-configuration)
+		(setq ov-highlight-window-configuration nil)
 		(overlay-put (ov-at) 'help-echo tooltip)
 		(let ((buf (get-buffer "*ov-highlights*")))
 		  (when (and ov-highlight-source
@@ -529,27 +548,27 @@ The list is from first to last."
 
 
 (define-derived-mode ov-highlight-list-mode
-  tabulated-list-mode "ov-highlights"
-  "Mode for viewing ov-highlights as a tabular list.
+  tabulated-list-mode "ov-highlighters"
+  "Mode for viewing ov-highlighters as a tabular list.
 \\{ov-highlight-list-mode-map}"
   (setq tabulated-list-sort-key nil)
-  (add-hook 'tabulated-list-revert-hook
-	    #'ov-highlight-refresh-list))
+  ;; (add-hook 'tabulated-list-revert-hook
+	;;           #'ov-highlight-refresh-list)
+  )
 
 
 ;; * Save and load functions
-;;;###autoload
 (defun ov-highlight-get-highlights ()
-  "Returns a list of (beg end color note) for the overlays."
+  "Return a list of (beg end color note) for the overlays."
   (mapcar (lambda (ov)
 	    (list (overlay-start ov)
 		  (overlay-end ov)
 		  (overlay-properties ov)))
-	  (ov-get-highlight-overlays)))
+	  (ov-highlight-get-overlays)))
 
 
 (defun ov-highlight-read-data ()
-  "Reads the data saved in the current buffer."
+  "Read the data saved in the current buffer."
   (save-excursion
     (goto-char (point-min))
     (re-search-forward (format "^%s.*?ov-highlight-data: \\(.*\\)" comment-start))
@@ -583,7 +602,7 @@ The list is from first to last."
 	   ov)))
      (when ov-highlight-data
        (read (base64-decode-string (or ov-highlight-data ""))))))
-  (add-hook 'before-save-hook 'ov-highlight-save nil t)
+  ;; (add-hook 'before-save-hook 'ov-highlight-save nil t)
   ;; loading marks the buffer as modified, because the overlay functions mark
   ;; it, but it isn't. We mark it unmodified here.
   (set-buffer-modified-p nil))
@@ -596,7 +615,7 @@ Data is saved in comment in the document."
 	 (data-b64 (propertize
 		    (base64-encode-string (format "%S" data) t)
 		    'display "..."
-		    'invisible ov-highlight-data)))
+		    'invisible 'ov-highlight-data)))
     (save-restriction
       (widen)
       (save-excursion
@@ -629,14 +648,14 @@ Data is saved in comment in the document."
 
 
 ;; * The hydra menu
-;;;###autoload
-(defhydra ov-highlighter (:color blue :hint nil)
+
+(defhydra ov-highlight (:color blue :hint nil)
   "
 ^Highlight^       ^Markup^       ^Font^        ^Edit^       ^List^
 _g_: green        _b_: bold      _[_: decrease  _t_: typo    _l_: list
 _p_: pink         _i_: italic    _]_: increase  _m_: comment _k_: clear
-_y_: yellow       _u_: underline _F_: Change    ^ ^          _K_: clear all
-_c_: choose       _s_: strike
+_y_: yellow       _u_: underline _F_: Change    _d_: delete  _K_: clear all
+_c_: choose       _s_: strike    ^ ^            _n_: insert
 _f_: foreground   _x_: box
 "
   ("g" ov-highlight-green "green")
@@ -644,6 +663,8 @@ _f_: foreground   _x_: box
   ("y" ov-highlight-yellow "yellow")
   ("c" ov-highlight-color "Choose color")
   ("f" ov-highlight-foreground "Foreground")
+  ("d" ov-highlight-delete)
+  ("n" ov-highlight-insert)
 
   ("[" ov-highlight-decrease-font-size "Make size smaller" :color red)
   ("]" ov-highlight-increase-font-size "Make size bigger" :color red)
@@ -664,47 +685,25 @@ _f_: foreground   _x_: box
   ("K" ov-highlight-clear-all "Clear all highlights")
   ("q" quit-window "quit"))
 
-;; * markup overlays
-
-(defun ov-bold (beg end)
-  "Bold the selected text
-
-It returns the created overlay."
-  (interactive "r")
-
-  (flyspell-delete-region-overlays beg end)
-  ;; add a local hook to make sure it gets saved
-  (add-hook 'before-save-hook 'ov-highlight-save nil t)
-
-  (let ((ov (make-overlay beg end)))
-    (overlay-put ov 'face `(:weight bold))
-    (overlay-put ov 'ov-highlight t)
-    (set-buffer-modified-p t)
-    (let ((p (point)))
-      (when (mark)
-	(deactivate-mark))
-      (goto-char p))
-    ov))
 
 ;; * Copy, cut and paste
 (defvar ov-highlight-copy-data  '()
-  "p-list of overlays to recreate on copying and pasting.")
+  "A p-list of overlays to recreate on copying and pasting.")
 
 (defun ov-highlight-copy (beg end)
-  "Copy the region from BEG to END with overlays for pasting with `ov-highlight-paste'.
-Notes: we save the starts and ends separately, because the ends
-get lost when you cut overlays."
+  "Copy the region from BEG to END with overlays for pasting.
+Uses `ov-highlight-paste'. Notes: we save the starts and ends
+separately, because the ends get lost when you cut overlays."
   (interactive "r")
   (let ((ovs (loop for ov in (overlays-in beg end)
-		   if (overlay-get ov 'ov-highlight)
+		   if (overlay-get ov 'ov-highlighter)
 		   collect (copy-overlay ov))))
     (setq ov-highlight-copy-data (list
-				  :point beg
-				  :text (buffer-substring beg end)
-				  :overlays ovs
-				  :starts (mapcar #'ov-beg ovs)
-				  :ends (mapcar #'ov-end ovs)))))
-
+				    :point beg
+				    :text (buffer-substring beg end)
+				    :overlays ovs
+				    :starts (mapcar #'ov-beg ovs)
+				    :ends (mapcar #'ov-end ovs)))))
 
 (defun ov-highlight-paste ()
   "Paste the data from `ov-highlight-copy-data' at point."
@@ -716,7 +715,7 @@ get lost when you cut overlays."
 	   (ends (plist-get ov-highlight-copy-data :ends)))
       (save-excursion (insert text))
       (loop for ov in ovs for beg in starts for end in ends
-	    if (overlay-get ov 'ov-highlight)
+	    if (overlay-get ov 'ov-highlighter)
 	    do
 	    (let* ((delta (- beg (plist-get ov-highlight-copy-data :point)))
 		   (nov (make-overlay (+ p delta) (+ p delta (- end beg)))))
@@ -729,53 +728,53 @@ get lost when you cut overlays."
 ;; *** Advices - copy
 
 (defun ov-highlight-copy-advice (orig-func &rest args)
-  "Advise copy to enable ov-highlights to be copied."
+  "Advice function for copy to enable ov-highlighters to be copied.
+ORIG-FUNC here will be `kill-ring-save'.
+ARGS is the original arguments to that function."
   (let ((beg (nth 0 args))
 	(end (nth 1 args)))
     (if (-any #'identity (mapcar (lambda (ov)
-				   (overlay-get ov 'ov-highlight))
+				   (overlay-get ov 'ov-highlighter))
 				 (overlays-in beg end)))
 	(ov-highlight-copy beg end)
       (apply orig-func args))))
-
-;; forbid highlight info save to files.
-;; (advice-add 'kill-ring-save :around 'ov-highlight-copy-advice)
-;; (advice-remove 'kill-ring-save 'ov-highlight-copy-advice)
 
 
 ;; *** cut advice
 
 (defun ov-highlight-cut-advice (orig-func &rest args)
-  "Advise cut so we get ov-highlights."
+  "Advice function for cut so we get ov-highlighters.
+ORIG-FUNC here will be `kill-region'.
+ARGS is the original arguments to that function."
   (let ((beg (nth 0 args))
 	(end (nth 1 args)))
     (if (-any #'identity (mapcar (lambda (ov)
-				   (overlay-get ov 'ov-highlight))
+				   (overlay-get ov 'ov-highlighter))
 				 (overlays-in beg end)))
 	(progn (ov-highlight-copy beg end)
 	       (ov-clear beg end)
 	       (setf (buffer-substring beg end) ""))
       (apply orig-func args))))
 
-(advice-add 'kill-region :around 'ov-highlight-cut-advice)
-;; (advice-remove 'kill-region 'ov-highlight-cut-advice)
 
 ;; *** Paste advice
 
 (defun ov-highlight-paste-advice (orig-func &rest args)
-  "Advise paste so we can get ov-highlights."
+  "Advice function for paste so we can get ov-highlighters.
+ORIG-FUNC will be `yank'.
+ARGS is the original arguments to that function."
   (if (not (null ov-highlight-copy-data))
       (ov-highlight-paste)
     (apply orig-func args)))
 
-(advice-add 'yank :around 'ov-highlight-paste-advice)
-;; (advice-remove 'yank 'ov-highlight-paste-advice)
 
 ;; *** kill line advice
 (defun ov-highlight-kill-line-advice (orig-func &rest args)
-  "Advise kill line so we get ov-highlights."
+  "Advise kill line so we get ov-highlighters.
+ORIG-FUNC will be `kill-visual-line'.
+ARGS is the original arguments to that function."
   (if (-any #'identity (mapcar (lambda (ov)
-				 (overlay-get ov 'ov-highlight))
+				 (overlay-get ov 'ov-highlighter))
 			       (overlays-in
 				(line-beginning-position)
 				(line-end-position))))
@@ -785,12 +784,33 @@ get lost when you cut overlays."
 	(setf (buffer-substring (line-beginning-position) (line-end-position)) ""))
     (apply orig-func args)))
 
-(advice-add 'kill-visual-line :around 'ov-highlight-kill-line-advice)
-;; (advice-remove 'kill-visual-line 'ov-highlight-kill-line-advice)
+
+(defun ov-highlight-cut-copy-paste-on ()
+  "Turn advices for cut/copy/paste/kill on.
+Note: if this causes bad behavior use
+`ov-highlight-cut-copy-paste-off' to remove the advices."
+  (interactive)
+  (advice-add 'kill-ring-save :around 'ov-highlight-copy-advice)
+  (advice-add 'kill-region :around 'ov-highlight-cut-advice)
+  (advice-add 'yank :around 'ov-highlight-paste-advice)
+  (advice-add 'kill-visual-line :around 'ov-highlight-kill-line-advice))
+
+
+(defun ov-highlight-cut-copy-paste-off ()
+  "Turn advices for cut/copy/paste/kill off."
+  (interactive)
+  (advice-remove 'kill-ring-save 'ov-highlight-copy-advice)
+  (advice-remove 'kill-region 'ov-highlight-cut-advice)
+  (advice-remove 'yank 'ov-highlight-paste-advice)
+  (advice-remove 'kill-visual-line 'ov-highlight-kill-line-advice))
+
+;; On by default
+(ov-highlight-cut-copy-paste-on)
+
 
 ;; * HTML
 
-(defun ov-highlighter-html (file)
+(defun ov-highlight-html (file)
   "Convert the buffer to html using htmlize and write to FILE."
   (interactive (list (read-file-name
 		      "File: " nil (concat (file-name-base) ".html"))))
@@ -800,63 +820,23 @@ get lost when you cut overlays."
     (kill-buffer buf)
     (browse-url file)))
 
-;; * Track changes
-(defvar ovh-current-deletion nil
-  "The current deleted selection. (string beg end backspace) We
-need this to reinsert the string for deletions, set the overlay
-positions, and set the cursor in the right place for backspace
-deletions.")
-
-(defun ovh-before-change (beg end)
-  (unless (or undo-in-progress
-	      (and (= beg (point-min))
-		   (= end (point-max)))) ; this happens on buffer switches
-    (if (= beg end)
-	(progn
-	  (message "Inserting"))
-      ;; when the deletion was done with backspace, point is at end.
-      (setq ovh-current-deletion (list (buffer-substring beg end) beg end (= (point) end))))))
-
-
-(defun ovh-after-change (beg end length)
-  (if (or undo-in-progress
-	  ovh-current-deletion)
-      (progn
-	(message "deleted %s" ovh-current-deletion)
-	(insert (car ovh-current-deletion))
-	;; check for adjacent overlays and extend if possible.
-	(ov-highlight-delete (nth 1 ovh-current-deletion)
-			     (nth 2 ovh-current-deletion))
-	(setq ovh-current-deletion nil))
-    (if (and (ov-at (- (point) 1)) (overlay-get (ov-at (- (point) 1)) 'ov-highlight))
-	(ov-move (ov-at (- (point) 1))
-		 (ov-beg (ov-at (- (point) 1)))
-		 (point))
-      (ov-highlight-insert (- (point) 1) (point)))
-    (message "%s %s %s" beg end length)))
-
-
-(defun ovh-track-changes (&optional arg)
-  "Toggle track changes."
-  (interactive (list (or current-prefix-arg 'toggle)))
-  (let ((enable (if (eq arg 'toggle)
-                    (not (get 'ovh-track-changes 'track-changes))
-                  (> (prefix-numeric-value arg) 0))))
-    (if enable
-        (progn
-	  (add-to-list 'before-change-functions 'ovh-before-change t)
-	  (add-to-list 'after-change-functions 'ovh-after-change)
-	  (setq ovh-current-deletion nil
-		inhibit-modification-hooks nil)
-	  (put 'ovh-track-changes 'track-changes t)
-	  (message "Track changes activated."))
-      (setq before-change-functions (delq 'ovh-before-change before-change-functions))
-      (setq after-change-functions (delq 'ovh-after-change after-change-functions))
-      (put 'ovh-track-changes 'track-changes nil)
-      (message "Track changes deactivated."))))
+(defun ov-highlight-html-region (r1 r2 file)
+  "Convert the region to html using htmlize and write to FILE."
+  (interactive (if (region-active-p)
+		   (list (region-beginning)
+			 (region-end)
+			 (read-file-name
+			  "File: " nil (concat (file-name-base) ".html")))
+		 (error "No active region.")))
+  (let ((buf (htmlize-region r1 r2)))
+    (with-current-buffer buf
+      (write-file file (buffer-string) nil))
+    (kill-buffer buf)
+    (browse-url file)))
 
 
 ;; * The End
-(provide 'ov-highlighter)
+(provide 'ov-highlight)
 
-;;; ov-highlighter.el ends here
+;;; ov-highlight.el ends here
+

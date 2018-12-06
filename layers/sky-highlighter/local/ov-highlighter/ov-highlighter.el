@@ -179,6 +179,9 @@ no arguments."
 (ov-highlight-make "blue" '(:background "LightBlue"))
 (ov-highlight-make "pink" '(:background "Pink"))
 (ov-highlight-make "green" '(:background "Darkolivegreen1"))
+(ov-highlight-make "red" '(:background "#CD5C5C"))
+(ov-highlight-make "purple" '(:background "#BA55D3"))
+(ov-highlight-make "golden" '(:background "#FFD700"))
 
 (ov-highlight-make "delete" '(:foreground "red" :strike-through t))
 (ov-highlight-make "insert" '(:foreground "blue"))
@@ -652,12 +655,21 @@ Data is saved in comment in the document."
 (defhydra ov-highlight (:color blue :hint nil)
   "
 ^Highlight^       ^Markup^       ^Font^        ^Edit^       ^List^
-_g_: green        _b_: bold      _[_: decrease  _t_: typo    _l_: list
+_g_: green        _B_: bold      _[_: decrease  _t_: typo    _l_: list
 _p_: pink         _i_: italic    _]_: increase  _m_: comment _k_: clear
 _y_: yellow       _u_: underline _F_: Change    _d_: delete  _K_: clear all
 _c_: choose       _s_: strike    ^ ^            _n_: insert
 _f_: foreground   _x_: box
+_r_: red
+_b_: blue
+_P_: purple
+_G_: golden
 "
+
+  ("r" ov-highlight-red "red")
+  ("b" ov-highlight-blue "blue")
+  ("P" ov-highlight-purple "purple")
+  ("G" ov-highlight-golden "golden")
   ("g" ov-highlight-green "green")
   ("p" ov-highlight-pink "pink")
   ("y" ov-highlight-yellow "yellow")
@@ -670,7 +682,7 @@ _f_: foreground   _x_: box
   ("]" ov-highlight-increase-font-size "Make size bigger" :color red)
   ("F" ov-highlight-font "Font")
 
-  ("b" ov-highlight-bold "Bold")
+  ("B" ov-highlight-bold "Bold")
   ("i" ov-highlight-italic "Italic")
   ("u" ov-highlight-underline "Underline")
   ("s" ov-highlight-strikethrough "Strikethrough")

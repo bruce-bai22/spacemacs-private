@@ -22,7 +22,7 @@ This function should only modify configuration layer settings."
    dotspacemacs-enable-lazy-installation 'unused
    ;; If non-nil then Spacemacs will ask for confirmation before installing
    ;; a layer lazily. (default t)
-   dotspacemacs-ask-for-lazy-installation t
+   dotspacemacs-ask-for-lazy-installation nil
    ;; If non-nil layers with lazy install support are lazy installed.
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
@@ -30,7 +30,6 @@ This function should only modify configuration layer settings."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(yaml
-     neotree
      ivy
      (ibuffer :variables
               ibuffer-group-buffers-by 'modes)
@@ -39,7 +38,8 @@ This function should only modify configuration layer settings."
      lsp
      html
      vimscript
-     ruby
+     syntax-checking
+     ;; ruby ;; too many packages I do not using, so add ruby-mode configuration to my own layer
      (sql :variables
           sql-capitalize-keywords t
           sql-capitalize-keywords-blacklist '())
@@ -55,12 +55,11 @@ This function should only modify configuration layer settings."
 
      ;; Magit is too slow in large project.
      (git :variables
-          git-magit-status-fullscreen nil)
+          git-magit-status-fullscreen t)
      ;; php
      ;; command-log ;; I think I don't need it any more, I have manage most shotcuts. 
      (auto-completion :variables
-                      auto-completion-enable-help-tooltip "manual"
-                      auto-completion-enable-sort-by-usage t)
+                      auto-completion-enable-help-tooltip "manual")
      (better-defaults :variables
                       better-defaults-move-to-end-of-code-first t)
      emacs-lisp
@@ -80,11 +79,12 @@ This function should only modify configuration layer settings."
 
      ;; try neotree, maybe better than ranger
      ;; (ranger :variables ranger-show-preview t)
+     neotree
+     ;; treemacs ;; treemacs is not good as I thought, use neotree back.
      (c-c++ :variables
             c-c++-default-mode-for-headers 'c++-mode
             c-c++-enable-clang-support t)
-     sky
-     )
+     sky)
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
@@ -98,11 +98,16 @@ This function should only modify configuration layer settings."
                                     chinese-word-at-point
                                     chinese-wbim
                                     fancy-battery
+                                    google-c-style
                                     linum
                                     google-translate
                                     monokai-light-theme
                                     monokai-dark-theme
+                                    magit-gitflow
+                                    gh-md
+                                    vmd-mode
                                     rtags
+                                    anaconda-mode
                                     helm-rtags
                                     counsel-gtags
                                     ivy-rtags

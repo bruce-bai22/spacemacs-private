@@ -31,12 +31,27 @@
 
 (defconst sky-javascript-packages
   '(js2-mode
-    indium))
+    indium
+    tide
+    ))
 
 (defun sky-javascript/post-init-js2-mode ()
   (add-hook 'js2-mode-hook
-            '(lambda ()
-               (ignore-errors (lsp-javascript-typescript-enable)))))
+            (lambda ()
+              (ignore-errors (lsp-javascript-typescript-enable))))
+  (add-hook 'js2-mode-hook (lambda ()
+                             (tide-setup)
+                             ;; 当 tsserver 服务没有启动时自动重新启动
+                             (unless (tide-current-server)
+                               (message "restart server")
+                               (tide-restart-server))
+                             (tide-hl-identifier-mode))))
+
+;; I do not think company-tide has more advantages than company-lsp
+;; (defun sky-javascript/post-init-company ()
+;;   (add-hook 'js2-mode-local-vars-hook (lambda ()
+;;                                         (spacemacs|add-company-backends :backends company-tide
+;;                                                                         :modes js2-mode))))
 
 (defun sky-javascript/init-indium ()
   (use-package indium
@@ -58,5 +73,31 @@
       "eb" 'indium-eval-buffer
       "ez" 'indium-switch-to-repl-buffer
       "ed" 'indium-switch-to-debugger)))
+
+(defun sky-javascript/init-tide ()
+  (use-package tide
+    :ensure t
+    :init
+    :after (js2-mode company flycheck)))
+
+(defun sky-javascript/post-init-tide ()
+  (with-eval-after-load 'js2-mode
+    (define-key js2-mode-map (kbd "H-,") #'tide-jump-back)
+    (define-key js2-mode-map (kbd "M-,") nil)
+    (define-key js2-mode-map (kbd "H-.") #'tide-jump-to-definition))
+  (with-eval-after-load 'typescript-mode
+    (define-key typescript-mode-map (kbd "H-,") #'tide-jump-back)
+    (define-key typescript-mode-map (kbd "M-,") nil)
+    (define-key js2-mode-map (kbd "H-.") #'tide-jump-to-definition))
+  (spacemacs/set-leader-keys-for-major-mode 'js2-mode
+    "gg" 'tide-jump-to-definition
+    "fh" 'tide-documentation-at-point
+    "fu" 'tide-references
+    "fE" 'tide-project-errors
+    "Re" 'tide-rename-symbol
+    "Rf" 'tide-rename-file
+    "fe" 'tide-fix
+    "Rf" 'tide-refactor))
+
 
 ;;; packages.el ends here

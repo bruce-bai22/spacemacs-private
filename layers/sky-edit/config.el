@@ -30,4 +30,6 @@
 (add-hook 'org-mode-hook
           (lambda () (setq truncate-lines nil)))
 
+(global-set-key (kbd "H-f") 'swiper)
+
 ;; config.el ends here.

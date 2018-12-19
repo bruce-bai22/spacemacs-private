@@ -14,6 +14,7 @@
                                       sky-javascript
                                       sky-lisp
                                       sky-edit
+                                      sky-ruby
                                       sky-ui
                                       sky-misc
                                       sky-org

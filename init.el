@@ -38,6 +38,7 @@ This function should only modify configuration layer settings."
      lsp
      html
      vimscript
+     (dash :packages dash-at-point)
      syntax-checking
      ;; ruby ;; too many packages I do not using, so add ruby-mode configuration to my own layer
      (sql :variables

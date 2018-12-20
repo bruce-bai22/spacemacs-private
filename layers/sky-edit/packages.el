@@ -55,7 +55,7 @@
 
 (defun sky-edit/post-init-dired ()
   ;; 开关 dired-dwim-target
-  (spacemacs/set-leader-keys "dd" 'sky-toggle-dired-dwim-target)
+  (spacemacs/set-leader-keys-for-major-mode 'dired-mode "dd" 'sky-toggle-dired-dwim-target)
   (with-eval-after-load 'dired
     ;; dired-mode 下总是递归拷贝目录
     (setq dired-recursive-copies 'always)

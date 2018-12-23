@@ -72,7 +72,17 @@
       "er" 'indium-eval-region
       "eb" 'indium-eval-buffer
       "ez" 'indium-switch-to-repl-buffer
-      "ed" 'indium-switch-to-debugger)))
+      "ed" 'indium-switch-to-debugger
+      "dd" 'indium-debugger-step-over
+      "di" 'indium-debugger-step-into
+      "do" 'indium-debugger-step-out
+      "dc" 'indium-debugger-resume
+      "dh" 'indium-debugger-here
+      "dl" 'indium-debugger-locals
+      "de" 'indium-debugger-evaluate
+      "ds" 'indium-debugger-stack-frames
+      "dn" 'indium-debugger-next-frame
+      "dp" 'indium-debugger-previous-frame)))
 
 (defun sky-javascript/init-tide ()
   (use-package tide

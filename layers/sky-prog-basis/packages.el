@@ -34,6 +34,7 @@
     flycheck
     company
     hungry-delete
+    smartparens
     magit
     dockerfile-mode
     company-shell))
@@ -46,6 +47,9 @@
   (use-package company-shell
     :defer t
     :init))
+
+(defun sky-prog-basis/post-init-smartparens ()
+  (add-hook 'prog-mode-hook 'smartparens-mode))
 
 (defun sky-prog-basis/post-init-company ()
   (with-eval-after-load 'sh-mode

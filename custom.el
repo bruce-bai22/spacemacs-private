@@ -33,4 +33,4 @@
  '(company-tooltip-common-selection ((t (:background "#C0C0C0" :weight bold))))
  '(company-tooltip-selection ((t (:weight extra-bold))))
  '(lsp-ui-sideline-global ((t (:background "#DCDCDC" :underline nil))))
- '(which-func ((t (:background "#D3D3D3" :foreground "#859900")))))
+ '(which-func ((t (:background "#D3D3D3" :foreground "#CD5555")))))

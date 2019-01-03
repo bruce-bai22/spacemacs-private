@@ -64,14 +64,15 @@
 ;;     (spacemacs|diminish tide-mode "Ⓣ" "T")))
 
 (defun sky-ui/post-init-spaceline ()
-  ;; (defun set-header-line ()
-  ;;   (setq header-line-format
-  ;;         '((which-func-mode ("" which-func-format " ")))))
-  ;; (add-hook 'prog-mode-hook 'set-header-line)
-  ;; (add-hook 'text-mode-hook 'set-header-line)
-  ;; (add-hook 'js2-mode-hook 'set-header-line)
-  ;; (add-hook 'web-mode-hook 'set-header-line)
-  (spaceline-toggle-minor-modes-off))
+  (defun set-header-line ()
+    (setq header-line-format
+          '((which-func-mode ("" which-func-format " ")))))
+  (add-hook 'prog-mode-hook 'set-header-line)
+  (add-hook 'text-mode-hook 'set-header-line)
+  (add-hook 'js2-mode-hook 'set-header-line)
+  (add-hook 'web-mode-hook 'set-header-line)
+  (spaceline-toggle-minor-modes-off)
+  (spaceline-toggle-which-function-off))
 
 ;; 配置默认不显示空白字符
 (defun sky-ui/post-init-whitespace ()

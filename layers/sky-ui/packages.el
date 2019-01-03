@@ -31,30 +31,40 @@
 
 (defconst sky-ui-packages
   '(display-line-numbers
-    hungry-delete
-    lispy
+    ;; hungry-delete
+    ;; lispy
+    ;; mmm-mode
+    ;; tide
     whitespace
-    mmm-mode))
+    spaceline))
 
 (defun sky-ui/post-init-display-line-numbers ()
     (add-hook 'prog-mode-hook 'display-line-numbers-mode))
 
 ;; 下面的配置都是在 space-line 中为不同模式提供 minor-mode 的字符表示
-(defun sky-ui/pre-init-hungry-delete ()
-  (spacemacs|use-package-add-hook hungry-delete
-    :post-init
-    (spacemacs|diminish hungry-delete-mode "ⓗ" "h")))
+;; (defun sky-ui/pre-init-hungry-delete ()
+;;   (spacemacs|use-package-add-hook hungry-delete
+;;     :post-init
+;;     (spacemacs|diminish hungry-delete-mode "ⓗ" "h")))
 
-(defun sky-ui/pre-init-lispy ()
-  (spacemacs|use-package-add-hook lispy
-    :post-init
-    (spacemacs|diminish lispy-mode "Ⓛ" "L")))
+;; (defun sky-ui/pre-init-lispy ()
+;;   (spacemacs|use-package-add-hook lispy
+;;     :post-init
+;;     (spacemacs|diminish lispy-mode "Ⓛ" "L")))
 
-;; 这里只是为了将 mmm-mode 的 mode 标识 diminish 为 M
-(defun sky-ui/pre-init-mmm-mode ()
-  (spacemacs|use-package-add-hook mmm-mode
-    :post-init
-    (spacemacs|diminish mmm-mode "Ⓜ" "M")))
+;; ;; 这里只是为了将 mmm-mode 的 mode 标识 diminish 为 M
+;; (defun sky-ui/pre-init-mmm-mode ()
+;;   (spacemacs|use-package-add-hook mmm-mode
+;;     :post-init
+;;     (spacemacs|diminish mmm-mode "Ⓜ" "M")))
+
+;; (defun sky-ui/pre-init-tide ()
+;;   (spacemacs|use-package-add-hook tide
+;;     :post-init
+;;     (spacemacs|diminish tide-mode "Ⓣ" "T")))
+
+(defun sky-ui/post-init-spaceline ()
+  (spaceline-toggle-minor-modes-off))
 
 ;; 配置默认不显示空白字符
 (defun sky-ui/post-init-whitespace ()

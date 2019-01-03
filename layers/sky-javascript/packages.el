@@ -33,6 +33,7 @@
   '(js2-mode
     indium
     tide
+    company
     ))
 
 (defun sky-javascript/post-init-js2-mode ()
@@ -48,10 +49,10 @@
                              (tide-hl-identifier-mode))))
 
 ;; I do not think company-tide has more advantages than company-lsp
-;; (defun sky-javascript/post-init-company ()
-;;   (add-hook 'js2-mode-local-vars-hook (lambda ()
-;;                                         (spacemacs|add-company-backends :backends company-tide
-;;                                                                         :modes js2-mode))))
+(defun sky-javascript/post-init-company ()
+  (add-hook 'js2-mode-local-vars-hook (lambda ()
+                                        (spacemacs|add-company-backends :backends company-tide
+                                                                        :modes js2-mode))))
 
 (defun sky-javascript/init-indium ()
   (use-package indium
@@ -82,7 +83,9 @@
       "de" 'indium-debugger-evaluate
       "ds" 'indium-debugger-stack-frames
       "dn" 'indium-debugger-next-frame
-      "dp" 'indium-debugger-previous-frame)))
+      "dp" 'indium-debugger-previous-frame
+      "dS" 'indium-launch
+      "dq" 'indium-quit)))
 
 (defun sky-javascript/init-tide ()
   (use-package tide

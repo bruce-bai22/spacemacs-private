@@ -40,7 +40,10 @@ This function should only modify configuration layer settings."
      vimscript
      (dash :packages dash-at-point)
      syntax-checking
-     ;; ruby ;; too many packages I do not using, so add ruby-mode configuration to my own layer
+
+     ;; there's too many packages in ruby layer that I don't need, so add ruby-mode configuration to my own layer
+     ;; ruby 
+
      (sql :variables
           sql-capitalize-keywords t
           sql-capitalize-keywords-blacklist '())
@@ -52,15 +55,16 @@ This function should only modify configuration layer settings."
                  node-add-modules-path t)
      (markdown :variables
                markdown-live-preview-engine 'vmd)
+
      ;; swift ;; Do not need highlight for swift in emacs, just open the file and search sth.
 
-     ;; Magit is too slow in large project.
+     ;; Magit is much better than ever, get it back now.
      (git :variables
           git-magit-status-fullscreen t)
-     ;; php
+
      ;; command-log ;; I think I don't need it any more, I have manage most shotcuts. 
      (auto-completion :variables
-                      auto-completion-enable-help-tooltip "manual")
+                      auto-completion-enable-help-tooltip t)
      (better-defaults :variables
                       better-defaults-move-to-end-of-code-first t)
      emacs-lisp
@@ -81,7 +85,9 @@ This function should only modify configuration layer settings."
      ;; try neotree, maybe better than ranger
      ;; (ranger :variables ranger-show-preview t)
      neotree
-     ;; treemacs ;; treemacs is not good as I thought, use neotree back.
+
+     ;; treemacs ;; treemacs is not good as I thought, get neotree back.
+
      (c-c++ :variables
             c-c++-default-mode-for-headers 'c++-mode
             c-c++-enable-clang-support t)
@@ -101,6 +107,7 @@ This function should only modify configuration layer settings."
                                     fancy-battery
                                     google-c-style
                                     linum
+                                    lsp-javascript-typescript
                                     google-translate
                                     monokai-light-theme
                                     monokai-dark-theme
@@ -405,7 +412,7 @@ It should only modify the values of Spacemacs settings."
    ;; %z - mnemonics of buffer, terminal, and keyboard coding systems
    ;; %Z - like %z, but including the end-of-line format
    ;; (default "%I@%S")
-   dotspacemacs-frame-title-format "%I@%S"
+   dotspacemacs-frame-title-format "%I@%S%f"
    ;; Format specification for setting the icon title format
    ;; (default nil - same as frame-title-format)
    dotspacemacs-icon-title-format nil

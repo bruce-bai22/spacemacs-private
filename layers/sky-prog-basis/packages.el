@@ -36,6 +36,7 @@
     hungry-delete
     smartparens
     magit
+    counsel-projectile
     dockerfile-mode
     company-shell))
 
@@ -47,6 +48,9 @@
   (use-package company-shell
     :defer t
     :init))
+
+(defun sky-prog-basis/post-init-counsel-projectile ()
+  (spacemacs/set-leader-keys "sp" 'counsel-projectile-ag))
 
 (defun sky-prog-basis/post-init-smartparens ()
   (add-hook 'prog-mode-hook 'smartparens-mode))

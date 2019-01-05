@@ -32,6 +32,7 @@
 (defconst sky-misc-packages
   '(youdao-dictionary
     paradox
+    wttrin
     sql))
 
 ;; 有道词典搜索单词
@@ -43,6 +44,13 @@
   (with-eval-after-load 'paradox
     (setq paradox-automatically-star nil)
     (setq paradox-github-token "fa6ba6c8cdc64ae5a1aef7e6906203ff1663104a")))
+
+(defun sky-misc/init-wttrin ()
+  (use-package wttrin
+    :defer t
+    :init
+    (setq wttrin-default-cities '(("Hangzhou" "Zhejiang")
+                                  ("Shanghai" "Shanghai")))))
 
 (defun sky-misc/post-init-sql ()
   (setq sql-mysql-program "/usr/local/mysql/bin/mysql")

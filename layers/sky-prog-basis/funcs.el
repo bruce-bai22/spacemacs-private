@@ -43,6 +43,7 @@
             (let* ((dom (libxml-parse-xml-region (point-min) (point-max)))
                    (items (dom-by-tag dom 'item)))
               (cl-loop for item in items
+                       for idx from 0
                        for uid = (dom-attr item 'uid)
                        for quicklookurl = (dom-text (dom-child-by-tag item 'quicklookurl))
                        for title = (dom-text (dom-child-by-tag item 'title))
@@ -50,6 +51,7 @@
                        for subtitle+face = (propertize subtitle 'face 'font-lock-comment-face)
                        collect (propertize (concat title " " subtitle+face)
                                            'uid uid
+                                           'idx idx
                                            'quicklookurl quicklookurl)))
           (list
            "Error: dashAlfredWorkflow fails"
@@ -57,6 +59,9 @@
            (split-string (buffer-string) "\n"))))))
    :dynamic-collection t
    :action (lambda (x)
-             (call-process "open" nil nil nil (get-text-property 0 'uid x)))))
+             (call-process "open"
+                           nil nil nil
+                           "-g" (format "dash-workflow-callback://%d"
+                                        (get-text-property 0 'idx x))))))
 
 ;; funcs.el ends here.

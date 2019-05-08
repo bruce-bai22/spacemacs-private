@@ -50,7 +50,6 @@
   ;; use tsserver instead, remove hooking lsp or tern backend in javascript layer. 
   (remove-hook 'js2-mode-local-vars-hook #'spacemacs//javascript-setup-backend))
 
-;; I do not think company-tide has more advantages than company-lsp
 (defun sky-javascript/post-init-company ()
   (add-hook 'js2-mode-local-vars-hook (lambda ()
                                         (spacemacs|add-company-backends :backends company-tide

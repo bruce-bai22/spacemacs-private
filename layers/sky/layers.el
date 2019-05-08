@@ -11,7 +11,7 @@
 
 (configuration-layer/declare-layers '(sky-prog-basis
                                       sky-c-c++
-                                      sky-javascript
+                                      ;; sky-javascript
                                       sky-lisp
                                       sky-edit
                                       sky-ruby
@@ -19,4 +19,5 @@
                                       sky-misc
                                       sky-org
                                       sky-python
+                                      ;; sky-shell
                                       sky-highlighter))

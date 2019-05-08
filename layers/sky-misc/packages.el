@@ -49,8 +49,11 @@
   (use-package wttrin
     :defer t
     :init
-    (setq wttrin-default-cities '(("Hangzhou" "Zhejiang")
-                                  ("Shanghai" "Shanghai")))))
+    (setq wttrin-default-cities '(("Hangzhou" "China")
+                                  ("Shanghai" "China")
+                                  ("Wuxi" "China")
+                                  ("Jining" "China")
+                                  ("Qingdao" "China")))))
 
 (defun sky-misc/post-init-sql ()
   (setq sql-mysql-program "/usr/local/mysql/bin/mysql")
@@ -70,6 +73,46 @@
            (sql-password "msgpush")
            (sql-database "")
            (sql-server "10.122.134.164")
+           (sql-port 3306))
+          ("push-server@10.122.134.173"
+           (sql-product
+            (quote mysql))
+           (sql-user "msgpush")
+           (sql-password "msgpush")
+           (sql-database "")
+           (sql-server "10.122.134.173")
+           (sql-port 3307))
+          ("push-server@localhost-ssh-tunnel-10.122.134.164"
+           (sql-product
+            (quote mysql))
+           (sql-user "msgpush")
+           (sql-password "msgpush")
+           (sql-database "")
+           (sql-server "127.0.0.1")
+           (sql-port 9906))
+          ("push-server@localhost-ssh-tunnel-10.122.134.173"
+           (sql-product
+            (quote mysql))
+           (sql-user "msgpush")
+           (sql-password "msgpush")
+           (sql-database "")
+           (sql-server "127.0.0.1")
+           (sql-port 9907))
+          ("onepush-server@push5.photo.163.org"
+           (sql-product
+            (quote mysql))
+           (sql-user "onepush")
+           (sql-password "onepush")
+           (sql-database "")
+           (sql-server "push5.photo.163.org")
+           (sql-port 3306))
+          ("online-gateway-server@10.172.26.110"
+           (sql-product
+            (quote mysql))
+           (sql-user "msgpush")
+           (sql-password "msgpush")
+           (sql-database "gateway-msgpush")
+           (sql-server "10.172.26.110")
            (sql-port 3306))
           ("docker-sky-local-test"
            (sql-product 'mysql)

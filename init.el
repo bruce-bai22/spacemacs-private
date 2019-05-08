@@ -29,7 +29,9 @@ This function should only modify configuration layer settings."
    dotspacemacs-configuration-layer-path '()
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(yaml
+   '(
+     lua
+     yaml
      ivy
      (ibuffer :variables
               ibuffer-group-buffers-by 'modes)
@@ -45,10 +47,11 @@ This function should only modify configuration layer settings."
      ;; ruby 
 
      (sql :variables
-          sql-capitalize-keywords t
+          sql-capitalize-keywords nil
           sql-capitalize-keywords-blacklist '())
+
+     ;; use webstorm back, programming in emacs is not user-friendly as I thought.
      (javascript :variables
-                 javascript-backend 'lsp
                  javascript-fmt-tool 'web-beautify
                  js2-basic-offset 2
                  js-indent-level 2
@@ -61,6 +64,8 @@ This function should only modify configuration layer settings."
      ;; Magit is much better than ever, get it back now.
      (git :variables
           git-magit-status-fullscreen t)
+     (cmake :variables
+            cmake-enable-cmake-ide-support t)
 
      ;; command-log ;; I think I don't need it any more, I have manage most shotcuts. 
      (auto-completion :variables
@@ -88,9 +93,12 @@ This function should only modify configuration layer settings."
 
      ;; treemacs ;; treemacs is not good as I thought, get neotree back.
 
-     (c-c++ :variables
-            c-c++-default-mode-for-headers 'c++-mode
-            c-c++-enable-clang-support t)
+     ;; use xcode instead, better experience
+     ;; (c-c++ :variables
+     ;;        c-c++-default-mode-for-headers 'c++-mode
+     ;;        c-c++-backend 'lsp-ccls
+     ;;        c-c++-lsp-executable (file-truename "/usr/local/bin/ccls")
+     ;;        c-c++-lsp-sem-highlight-method 'font-lock)
      sky)
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -139,6 +147,11 @@ This function should only modify configuration layer settings."
                                     gmail-message-mode
                                     skewer-mode
                                     magit-svn
+                                    tern
+                                    livid-mode
+                                    js2-refactor
+                                    prettier-js
+                                    js-doc
                                     )
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
@@ -437,10 +450,10 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
-  (setq configuration-layer-elpa-archives
-        '(("melpa-cn" . "http://elpa.zilongshanren.com/melpa/")
-          ("org-cn"   . "http://elpa.zilongshanren.com/org/")
-          ("gnu-cn"   . "http://elpa.zilongshanren.com/gnu/")))
+  (setq configuration-layer--elpa-archives
+        '(("melpa-cn" . "http://elpa.emacs-china.org/melpa/")
+          ("org-cn"   . "http://elpa.emacs-china.org/org/")
+          ("gnu-cn"   . "http://elpa.emacs-china.org/gnu/")))
 
   (setq tramp-ssh-controlmaster-options "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no")
 

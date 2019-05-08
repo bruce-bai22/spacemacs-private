@@ -42,6 +42,7 @@
   (add-hook 'prog-mode-hook 'display-line-numbers-mode))
 
 ;; 下面的配置都是在 space-line 中为不同模式提供 minor-mode 的字符表示
+;; 但是现在不再在 mode-line 中显示 minor modes 了，所以都注释掉了
 ;; (defun sky-ui/pre-init-hungry-delete ()
 ;;   (spacemacs|use-package-add-hook hungry-delete
 ;;     :post-init

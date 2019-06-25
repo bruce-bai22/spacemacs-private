@@ -64,4 +64,10 @@
                            "-g" (format "dash-workflow-callback://%d"
                                         (get-text-property 0 'idx x))))))
 
+(defun remove-dos-eol ()
+  "Do not show ^M in files containing mixed UNIX and DOS line endings."
+  (interactive)
+  (setq buffer-display-table (make-display-table))
+  (aset buffer-display-table ?\^M []))
+
 ;; funcs.el ends here.

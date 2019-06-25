@@ -33,15 +33,14 @@ This function should only modify configuration layer settings."
      lua
      yaml
      ivy
+     lsp
      (ibuffer :variables
               ibuffer-group-buffers-by 'modes)
      (python :variables
              python-backend 'lsp)
-     lsp
      html
      vimscript
      (dash :packages dash-at-point)
-     syntax-checking
 
      ;; there's too many packages in ruby layer that I don't need, so add ruby-mode configuration to my own layer
      ;; ruby 
@@ -51,8 +50,14 @@ This function should only modify configuration layer settings."
           sql-capitalize-keywords-blacklist '())
 
      ;; use webstorm back, programming in emacs is not user-friendly as I thought.
+     web-beautify
+     import-js
+     dap
      (javascript :variables
+                 javascript-backend 'lsp
                  javascript-fmt-tool 'web-beautify
+                 javascript-import-tool 'import-js
+                 javascript-repl 'nodejs
                  js2-basic-offset 2
                  js-indent-level 2
                  node-add-modules-path t)
@@ -60,7 +65,6 @@ This function should only modify configuration layer settings."
                markdown-live-preview-engine 'vmd)
 
      ;; swift ;; Do not need highlight for swift in emacs, just open the file and search sth.
-
      ;; Magit is much better than ever, get it back now.
      (git :variables
           git-magit-status-fullscreen t)
@@ -89,11 +93,12 @@ This function should only modify configuration layer settings."
 
      ;; try neotree, maybe better than ranger
      ;; (ranger :variables ranger-show-preview t)
-     neotree
+     ;; neotree
+     
+     ;; treemacs is not good as I thought, get neotree back. 2019-06, back to treemacs
+     treemacs 
 
-     ;; treemacs ;; treemacs is not good as I thought, get neotree back.
-
-     ;; use xcode instead, better experience
+     ;; use clion instead, better experience
      ;; (c-c++ :variables
      ;;        c-c++-default-mode-for-headers 'c++-mode
      ;;        c-c++-backend 'lsp-ccls
@@ -115,7 +120,6 @@ This function should only modify configuration layer settings."
                                     fancy-battery
                                     google-c-style
                                     linum
-                                    lsp-javascript-typescript
                                     google-translate
                                     monokai-light-theme
                                     monokai-dark-theme
@@ -149,7 +153,6 @@ This function should only modify configuration layer settings."
                                     magit-svn
                                     tern
                                     livid-mode
-                                    js2-refactor
                                     prettier-js
                                     js-doc
                                     )
@@ -232,7 +235,8 @@ It should only modify the values of Spacemacs settings."
                          solarized-light
                          solarized-dark
                          spacemacs-light
-                         spacemacs-dark)
+                         spacemacs-dark
+                         )
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
    ;; `all-the-icons', `custom', `vim-powerline' and `vanilla'. The first three
    ;; are spaceline themes. `vanilla' is default Emacs mode-line. `custom' is a
@@ -247,7 +251,7 @@ It should only modify the values of Spacemacs settings."
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("Source Code Pro"
-                               :size 16
+                               :size 15
                                :weight normal
                                :width normal)
    ;; The leader key (default "SPC")

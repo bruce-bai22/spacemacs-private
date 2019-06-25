@@ -12,6 +12,7 @@
 
 ;;; Commentary:
 
+(add-hook 'java-mode-hook 'remove-dos-eol)
 
 
 

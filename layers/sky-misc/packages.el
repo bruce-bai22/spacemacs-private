@@ -32,6 +32,7 @@
 (defconst sky-misc-packages
   '(youdao-dictionary
     paradox
+    ;; benchmark-init
     wttrin
     sql))
 
@@ -45,6 +46,13 @@
     (setq paradox-automatically-star nil)
     (setq paradox-github-token "fa6ba6c8cdc64ae5a1aef7e6906203ff1663104a")))
 
+(defun sky-misc/init-benchmark-init ()
+  (use-package benchmark-init
+    :ensure t
+    :config
+    ;; To disable collection of benchmark data after init is done.
+    (add-hook 'after-init-hook 'benchmark-init/deactivate)))
+
 (defun sky-misc/init-wttrin ()
   (use-package wttrin
     :defer t
@@ -57,6 +65,13 @@
 
 (defun sky-misc/post-init-sql ()
   (setq sql-mysql-program "/usr/local/mysql/bin/mysql")
+  (with-eval-after-load 'sql
+    (add-hook 'sql-interactive-mode-hook
+              (lambda ()
+                (define-key sql-interactive-mode-map (kbd "C-k") 'kill-line)
+                (define-key sql-interactive-mode-map (kbd "C-n") 'comint-next-input)
+                (define-key sql-interactive-mode-map (kbd "C-p") 'comint-previous-input)
+                )))
   (setq sql-connection-alist
         '(("sky-local-test@localhost"
            (sql-product

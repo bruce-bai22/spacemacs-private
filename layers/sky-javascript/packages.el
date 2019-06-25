@@ -30,30 +30,32 @@
 ;;; Code:
 
 (defconst sky-javascript-packages
-  '(js2-mode
-    indium
-    tide
-    company
+  '(
+    js2-mode
+    ;; indium
+    ;; tide
     ))
 
 (defun sky-javascript/post-init-js2-mode ()
   (add-hook 'js2-mode-hook
             (lambda ()
-              (ignore-errors (lsp-javascript-typescript-enable))))
-  (add-hook 'js2-mode-hook (lambda ()
-                             (tide-setup)
-                             ;; 当 tsserver 服务没有启动时自动重新启动
-                             (unless (tide-current-server)
-                               (message "restart server")
-                               (tide-restart-server))
-                             (tide-hl-identifier-mode)))
+              (progn
+                (ignore-errors (lsp-javascript-typescript-enable))
+                (setq lsp-ui-sideline-mode 0))))
+  ;; (add-hook 'js2-mode-hook
+  ;;           (lambda ()
+  ;;             (company-mode 1)
+  ;;             (setq-local company-backends '(company-lsp))))
+  ;; (add-hook 'js2-mode-hook (lambda ()
+  ;;                            (tide-setup)
+  ;;                            ;; 当 tsserver 服务没有启动时自动重新启动
+  ;;                            (unless (tide-current-server)
+  ;;                              (message "restart server")
+  ;;                              (tide-restart-server))
+  ;;                            (tide-hl-identifier-mode)))
   ;; use tsserver instead, remove hooking lsp or tern backend in javascript layer. 
-  (remove-hook 'js2-mode-local-vars-hook #'spacemacs//javascript-setup-backend))
-
-(defun sky-javascript/post-init-company ()
-  (add-hook 'js2-mode-local-vars-hook (lambda ()
-                                        (spacemacs|add-company-backends :backends company-tide
-                                                                        :modes js2-mode))))
+  ;; (remove-hook 'js2-mode-local-vars-hook #'spacemacs//javascript-setup-backend)
+  )
 
 (defun sky-javascript/init-indium ()
   (use-package indium

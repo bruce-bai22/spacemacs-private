@@ -69,7 +69,13 @@
     (define-key company-active-map (kbd "C-p") #'company-select-previous)
     ;; (spacemacs/diminish-undo 'company-mode)
     (setq company-minimum-prefix-length 1)
-    (setq company-idle-delay 0.1)))
+    (setq company-idle-delay 0.1))
+  (add-hook 'java-mode-hook
+            (lambda ()
+              (progn
+                (setq company-mode 1)
+                (spacemacs|add-company-backends :backends company-dabbrev-code company-dabbrev
+                                                :modes java-mode)))))
 
 (defun sky-prog-basis/post-init-hungry-delete ()
   (add-hook 'prog-mode-hook 'hungry-delete-mode))
